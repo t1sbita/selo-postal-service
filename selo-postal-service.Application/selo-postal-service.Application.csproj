@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>selo_postal_service.Console</RootNamespace>
+    <RootNamespace>selo_postal_service.Application</RootNamespace>
   </PropertyGroup>
 
 </Project>

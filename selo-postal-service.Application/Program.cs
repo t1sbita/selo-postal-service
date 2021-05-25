@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace selo_postal_service.Console
+namespace selo_postal_service.Application
 {
     class Program
     {
