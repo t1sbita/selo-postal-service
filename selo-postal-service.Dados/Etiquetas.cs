@@ -4,13 +4,13 @@ namespace selo_postal_service.Dados
 {
     public class Etiquetas
     {
-        public string Nome { get; set; }
-        public string Endereco { get; set; }
-        public string NumeroCasa { get; set; }
-        public string CodigoPostal { get; set; }
-        public string Bairro { get; set; }
-        public string Cidade { get; set; }
-        public string Estado { get; set; }
+        public string Nome { get; }
+        public string Endereco { get; }
+        public string NumeroCasa { get;  }
+        public string CodigoPostal { get; }
+        public string Bairro { get; }
+        public string Cidade { get; }
+        public string Estado { get; }
 
         public Etiquetas()
         {
