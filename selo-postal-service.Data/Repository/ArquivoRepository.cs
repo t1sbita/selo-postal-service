@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using selo_postal_service.Dados;
-using System.Linq;
-using selo_postal_service.Data.Domain.DTO;
+using selo_postal_service.Core.Domain.Entities;
 
-namespace selo_postal_service.Core
+namespace selo_postal_service.Data.Repository
 {
     public class GeradorArquivo<TEntity> where TEntity : class
     {

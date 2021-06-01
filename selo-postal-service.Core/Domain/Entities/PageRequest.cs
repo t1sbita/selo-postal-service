@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-namespace selo_postal_service.Core
+
+namespace selo_postal_service.Core.Domain.Entities
 {
     public class PageRequest
     {

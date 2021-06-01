@@ -1,6 +1,7 @@
 using System.Linq;
+using selo_postal_service.Core.Domain.Entities;
 
-namespace selo_postal_service.Core
+namespace selo_postal_service.Data.Repository
 {
     public class Pagination<TEntity> where TEntity : class
     {

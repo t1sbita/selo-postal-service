@@ -2,17 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using selo_postal_service.Core.Exceptions;
-using selo_postal_service.Dados;
-using selo_postal_service.Dados.DTO;
+using selo_postal_service.Core.Domain.DTO;
+using selo_postal_service.Core.Domain.Entities;
 
-namespace selo_postal_service.Core
+namespace selo_postal_service.Data.Repository
 {
     public class EnderecoRepository
     {
 
-        public List<Etiquetas> GetByParamets(SearchEnderecoQueryItem enderecoQueryItem, PageRequest pr)
+        public List<Endereco> GetByParamets(SearchEnderecoQueryItem enderecoQueryItem, PageRequest pr)
         {
-            IQueryable<Etiquetas> resultadoPesquisaEndereco = ListaEnderecos.RetornaLista().AsQueryable();
+            IQueryable<Endereco> resultadoPesquisaEndereco = ListaEnderecos.RetornaLista().AsQueryable();
 
             // resultadoPesquisaEndereco.All()
 
@@ -31,7 +31,7 @@ namespace selo_postal_service.Core
                 resultadoPesquisaEndereco = resultadoPesquisaEndereco.Where(x => x.CodigoPostal == enderecoQueryItem.CodigoPostal);
             }
 
-            var page = Pagination<Etiquetas>.For(resultadoPesquisaEndereco, pr).ToList();
+            var page = Pagination<Endereco>.For(resultadoPesquisaEndereco, pr).ToList();
 
 
             if (page == null || page.Count() == 0)

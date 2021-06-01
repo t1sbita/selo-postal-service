@@ -1,6 +1,6 @@
 using System;
 
-namespace selo_postal_service.Data.Domain.DTO
+namespace selo_postal_service.Core.Domain.DTO
 {
     public class HeaderItem
     {
