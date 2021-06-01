@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\selo-postal-service.Dados\selo-postal-service.Dados.csproj" />
+    <ProjectReference Include="..\selo-postal-service.Data\selo-postal-service.Data.csproj" />
   </ItemGroup>
 
 </Project>
