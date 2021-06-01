@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "selo-postal-service.Applica
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "selo-postal-service.Core", "selo-postal-service.Core\selo-postal-service.Core.csproj", "{F03F37F3-CB1B-40AD-BED8-1F54D43A017A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "selo-postal-service.Dados", "selo-postal-service.Dados\selo-postal-service.Dados.csproj", "{CF130BB5-DCF7-46B6-BA2B-81D067DF1CC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "selo-postal-service.Data", "selo-postal-service.Data\selo-postal-service.Data.csproj", "{CF130BB5-DCF7-46B6-BA2B-81D067DF1CC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
