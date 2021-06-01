@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using selo_postal_service.Core;
 
 namespace selo_postal_service.Application
@@ -10,23 +10,19 @@ namespace selo_postal_service.Application
         static void Main(string[] args)
         {
             
-            char repetirPesquisa = 's';
+          EnderecoRepository er = new EnderecoRepository();
 
-            Console.WriteLine("*****************************************");
-            Console.WriteLine("\t\tBEM VINDO!");
-            Console.WriteLine("***************************************** \n");
-            Console.WriteLine("\tSistema Gerador de Etiquetas \n");
 
-            while (repetirPesquisa != 'n')
-            {
-                ImprimeNaTela.ImprimirTela();
-                
-                //retornaMetodoPesquisa();
-                System.Console.WriteLine("\nSua Pesquisa retornou a página p de um total de x páginas, com y itens por página, totalizando z itens");
+            PageRequest pr = PageRequest.Of(2, 20);
 
-                Console.WriteLine("\n Deseja Fazer outra pesquisa? [S/N]");
-                repetirPesquisa = char.Parse(Console.ReadLine().ToLowerInvariant());
-            }
+            Dados.DTO.SearchEnderecoQueryItem pa = new Dados.DTO.SearchEnderecoQueryItem {
+                Cidade = "Salvador",
+                CodigoPostal = "CD548J2547"
+            };
+
+            var l =  er.GetByParamets(pa, pr);
+
+            l.ForEach(e => Console.WriteLine(e.Nome));
 
         }
     }
