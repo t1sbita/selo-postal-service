@@ -10,7 +10,7 @@ namespace selo_postal_service.Core
     public class EnderecoRepository
     {
 
-        public IEnumerable<Etiquetas> GetByParamets(SearchEnderecoQueryItem enderecoQueryItem, PageRequest pr)
+        public List<Etiquetas> GetByParamets(SearchEnderecoQueryItem enderecoQueryItem, PageRequest pr)
         {
             IQueryable<Etiquetas> resultadoPesquisaEndereco = ListaEnderecos.RetornaLista().AsQueryable();
 
@@ -31,15 +31,16 @@ namespace selo_postal_service.Core
                 resultadoPesquisaEndereco = resultadoPesquisaEndereco.Where(x => x.CodigoPostal == enderecoQueryItem.CodigoPostal);
             }
 
-            if (resultadoPesquisaEndereco == null || resultadoPesquisaEndereco.Count() == 0)
+            var page = Pagination<Etiquetas>.For(resultadoPesquisaEndereco, pr).ToList();
+
+
+            if (page == null || page.Count() == 0)
             {
                 throw new NotFoundException("Não foram encontrados Membros");
             }
 
-            Pagination<Etiquetas>.For(resultadoPesquisaEndereco, pr).ToList();
+            return page;
 
-            return resultadoPesquisaEndereco;
-            
         }
     }
 }
