@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using selo_postal_service.Core.Domain.DTO;
 using selo_postal_service.Core.Domain.Entities;
 using selo_postal_service.Core.Interfaces;
+using selo_postal_service.Core.Services.Interfaces;
 
 namespace selo_postal_service.Core.Services
 {
-    public class ArquivoService
+    public class ArquivoService : IArquivoService
     {
         private readonly IArquivoRepository _enderecoRepository;
 
@@ -15,9 +16,9 @@ namespace selo_postal_service.Core.Services
             _enderecoRepository = enderecoRepository;
         }
 
-        public void CriarArquivo(IEnumerable<Endereco> list)
+        public void CreateArchive(IEnumerable<TsvObjectItem> list)
         {
-            _enderecoRepository.CriarArquivo(list);
+            _enderecoRepository.CreateArchive(list);
         }
     }
 }

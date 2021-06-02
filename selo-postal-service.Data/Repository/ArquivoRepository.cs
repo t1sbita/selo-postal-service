@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-
+using selo_postal_service.Core.Domain.DTO;
 using selo_postal_service.Core.Domain.Entities;
 using selo_postal_service.Core.Interfaces;
 
@@ -14,7 +14,7 @@ namespace selo_postal_service.Data.Repository
         /// <summary>
         /// Cria um arquivo .tsv com o resultado da query
         /// </summary>
-        public void CriarArquivo(IEnumerable<Endereco> list)
+        public void CreateArchive(IEnumerable<TsvObjectItem> list)
         {
             string gerarNomeArquivo = DateTime.Now.ToString("u").Replace(":", "");
 
@@ -28,7 +28,7 @@ namespace selo_postal_service.Data.Repository
                 writer.WriteLine(header.ToString());
                 writer.Flush();
                 
-                foreach (Endereco item in list)
+                foreach (TsvObjectItem item in list)
                 {
                     writer.WriteLine(item.ToString());
                     writer.Flush();

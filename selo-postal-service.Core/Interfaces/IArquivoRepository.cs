@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
-using selo_postal_service.Core.Domain.Entities;
+using selo_postal_service.Core.Domain.DTO;
+
 
 namespace selo_postal_service.Core.Interfaces
 {
@@ -9,6 +10,6 @@ namespace selo_postal_service.Core.Interfaces
         /// <summary>
         /// Cria um arquivo .tsv com o resultado da query
         /// </summary>
-        void CriarArquivo(IEnumerable<Endereco> list);
+        void CreateArchive(IEnumerable<TsvObjectItem> list);
     }
 }
