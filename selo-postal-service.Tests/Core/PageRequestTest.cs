@@ -17,6 +17,7 @@ namespace selo_postal_service.Tests.Core
         {
             PageRequest pageResult = PageRequest.Of(number, limit);
             Assert.AreEqual(pageResult.Limit, result);
+        
         }
         //Teste de paginação default
         [TestCase(1, null)]

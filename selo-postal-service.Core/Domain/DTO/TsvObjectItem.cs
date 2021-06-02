@@ -23,5 +23,10 @@ namespace selo_postal_service.Core.Domain.DTO
             this.QrCodeRef = qrCodeRef;
 
         }
+
+        public override string ToString()
+        {
+            return $"{Nome}\t{EnderecoCasa}\t{NumeroCasa}\t{CodigoPostal}\t{Bairro}\t{Cidade}\t{Estado}\t{QrCodeRef}";
+        }
     }
 }
