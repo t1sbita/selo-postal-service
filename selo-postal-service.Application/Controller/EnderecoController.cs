@@ -1,13 +1,13 @@
+using System;
 using System.Collections.Generic;
 
 using selo_postal_service.Core.Domain.Entities;
 using selo_postal_service.Core.Domain.DTO;
 using selo_postal_service.Core.Services.Interfaces;
-using selo_postal_service.Application.Controller.Interfaces;
 
 namespace selo_postal_service.Application.Controller
 {
-    public class EnderecoController : IEnderecoController
+    public class EnderecoController
     {
         
         private readonly IEnderecoService _enderecoService;
@@ -21,8 +21,11 @@ namespace selo_postal_service.Application.Controller
             _qrCoderService = qrCoderService;
         }
 
-        public void Search(SearchEnderecoQueryItem searchEnderecoQueryItem, PageRequest pageRequest)
+        public void Search(string cidade, string estado, string codigoPostal, Nullable<int> number, Nullable<int> limit)
         {
+            SearchEnderecoQueryItem searchEnderecoQueryItem = new SearchEnderecoQueryItem(cidade, estado, codigoPostal);
+            PageRequest pageRequest = PageRequest.Of(number, limit);
+
             List<Endereco> listResult = _enderecoService.GetByParameters(searchEnderecoQueryItem, pageRequest);
             _arquivoService.CreateArchive(_qrCoderService.GetQrCode(listResult));
         }

@@ -9,16 +9,16 @@ namespace selo_postal_service.Core.Services
 {
     public class ArquivoService : IArquivoService
     {
-        private readonly IArquivoRepository _enderecoRepository;
+        private readonly IArquivoRepository _arquivoRepository;
 
-        public ArquivoService(IArquivoRepository enderecoRepository)
+        public ArquivoService(IArquivoRepository arquivoRepository)
         {
-            _enderecoRepository = enderecoRepository;
+            _arquivoRepository = arquivoRepository;
         }
 
         public void CreateArchive(IEnumerable<TsvObjectItem> list)
         {
-            _enderecoRepository.CreateArchive(list);
+            _arquivoRepository.CreateArchive(list);
         }
     }
 }
