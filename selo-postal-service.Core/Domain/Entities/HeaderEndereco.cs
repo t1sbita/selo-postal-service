@@ -14,7 +14,7 @@ namespace selo_postal_service.Core.Domain.Entities
             Items.Add(new HeaderItem(4, "Bairro"));
             Items.Add(new HeaderItem(5, "Cidade"));
             Items.Add(new HeaderItem(6, "Estado"));
-            Items.Add(new HeaderItem(7, "QRCodeRef"));
+            Items.Add(new HeaderItem(7, "QrCodeRef"));
         }
 
         
