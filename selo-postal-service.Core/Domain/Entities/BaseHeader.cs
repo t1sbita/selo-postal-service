@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using selo_postal_service.Dados;
-using selo_postal_service.Data.Domain.DTO;
+using selo_postal_service.Core.Domain.DTO;
 
-namespace selo_postal_service.Core
+namespace selo_postal_service.Core.Domain.Entities
 {
     public class BaseHeader<TEntity> where TEntity : class
     {

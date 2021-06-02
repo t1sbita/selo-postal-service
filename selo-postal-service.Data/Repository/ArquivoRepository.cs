@@ -2,26 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using selo_postal_service.Dados;
-using System.Linq;
-using selo_postal_service.Data.Domain.DTO;
+using selo_postal_service.Core.Domain.DTO;
+using selo_postal_service.Core.Domain.Entities;
+using selo_postal_service.Core.Interfaces;
 
-namespace selo_postal_service.Core
+namespace selo_postal_service.Data.Repository
 {
-    public class GeradorArquivo<TEntity> where TEntity : class
+    public class ArquivoRepository : IArquivoRepository
     {
 
         /// <summary>
         /// Cria um arquivo .tsv com o resultado da query
         /// </summary>
-        public void CriarArquivo(IEnumerable<TEntity> list)
+        public void CreateArchive(IEnumerable<TsvObjectItem> list)
         {
             string gerarNomeArquivo = DateTime.Now.ToString("u").Replace(":", "");
 
             string novoArquivo = @"..\..\TSV\Pesquisa " + gerarNomeArquivo + ".tsv";
 
-            HeaderEndereco header = new HeaderEndereco();  //Generic anulado pq não consegui generalizar aqui :/
-            
+            HeaderEndereco header = new HeaderEndereco();  
             using (FileStream fluxoDeArquivo = new FileStream(novoArquivo, FileMode.Create))
             using (StreamWriter writer = new StreamWriter(fluxoDeArquivo, Encoding.UTF8))
             {
@@ -29,7 +28,7 @@ namespace selo_postal_service.Core
                 writer.WriteLine(header.ToString());
                 writer.Flush();
                 
-                foreach (TEntity item in list)
+                foreach (TsvObjectItem item in list)
                 {
                     writer.WriteLine(item.ToString());
                     writer.Flush();
