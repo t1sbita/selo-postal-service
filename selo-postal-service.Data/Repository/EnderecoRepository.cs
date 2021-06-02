@@ -1,20 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using selo_postal_service.Core.Exceptions;
+using selo_postal_service.Core.Interfaces;
 using selo_postal_service.Core.Domain.DTO;
 using selo_postal_service.Core.Domain.Entities;
 
+
 namespace selo_postal_service.Data.Repository
 {
-    public class EnderecoRepository
+    public class EnderecoRepository : IEnderecoRepository
     {
 
         public List<Endereco> GetByParamets(SearchEnderecoQueryItem enderecoQueryItem, PageRequest pr)
         {
             IQueryable<Endereco> resultadoPesquisaEndereco = ListaEnderecos.RetornaLista().AsQueryable();
-
-            // resultadoPesquisaEndereco.All()
 
             if (!String.IsNullOrWhiteSpace(enderecoQueryItem.Cidade))
             {
@@ -36,7 +37,7 @@ namespace selo_postal_service.Data.Repository
 
             if (page == null || page.Count() == 0)
             {
-                throw new NotFoundException("Não foram encontrados Membros");
+                throw new NotFoundException("Não existem endereços nesta página");
             }
 
             return page;
