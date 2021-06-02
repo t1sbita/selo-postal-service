@@ -28,6 +28,10 @@ namespace selo_postal_service.Core.Domain.Entities
 
         }
 
+        public override string ToString()
+        {
+            return $"{Nome}\t{EnderecoCasa}\t{NumeroCasa}\t{CodigoPostal}\t{Bairro}\t{Cidade}\t{Estado}";
+        }
 
     }
 }
