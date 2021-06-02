@@ -1,4 +1,4 @@
-namespace selo_postal_service.Dados.DTO
+namespace selo_postal_service.Core.Domain.DTO
 {
     public class SearchEnderecoQueryItem
     {

@@ -5,8 +5,4 @@
     <RootNamespace>selo_postal_service.Core</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\selo-postal-service.Data\selo-postal-service.Data.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using selo_postal_service.Core;
+
+using selo_postal_service.Core.Domain.Entities;
+using selo_postal_service.Core.Domain.DTO;
+using selo_postal_service.Data.Repository;
 
 namespace selo_postal_service.Application
 {
@@ -15,7 +17,7 @@ namespace selo_postal_service.Application
 
             PageRequest pr = PageRequest.Of(2, 20);
 
-            Dados.DTO.SearchEnderecoQueryItem pa = new Dados.DTO.SearchEnderecoQueryItem {
+            SearchEnderecoQueryItem pa = new SearchEnderecoQueryItem {
                 Cidade = "Salvador",
                 CodigoPostal = "CD548J2547"
             };

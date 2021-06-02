@@ -1,20 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using selo_postal_service.Core.Exceptions;
-using selo_postal_service.Dados;
-using selo_postal_service.Dados.DTO;
 
-namespace selo_postal_service.Core
+using selo_postal_service.Core.Exceptions;
+using selo_postal_service.Core.Interfaces;
+using selo_postal_service.Core.Domain.DTO;
+using selo_postal_service.Core.Domain.Entities;
+
+
+namespace selo_postal_service.Data.Repository
 {
-    public class EnderecoRepository
+    public class EnderecoRepository : IEnderecoRepository
     {
 
-        public List<Etiquetas> GetByParamets(SearchEnderecoQueryItem enderecoQueryItem, PageRequest pr)
+        public List<Endereco> GetByParamets(SearchEnderecoQueryItem enderecoQueryItem, PageRequest pr)
         {
-            IQueryable<Etiquetas> resultadoPesquisaEndereco = ListaEnderecos.RetornaLista().AsQueryable();
-
-            // resultadoPesquisaEndereco.All()
+            IQueryable<Endereco> resultadoPesquisaEndereco = ListaEnderecos.RetornaLista().AsQueryable();
 
             if (!String.IsNullOrWhiteSpace(enderecoQueryItem.Cidade))
             {
@@ -31,12 +32,12 @@ namespace selo_postal_service.Core
                 resultadoPesquisaEndereco = resultadoPesquisaEndereco.Where(x => x.CodigoPostal == enderecoQueryItem.CodigoPostal);
             }
 
-            var page = Pagination<Etiquetas>.For(resultadoPesquisaEndereco, pr).ToList();
+            var page = Pagination<Endereco>.For(resultadoPesquisaEndereco, pr).ToList();
 
 
             if (page == null || page.Count() == 0)
             {
-                throw new NotFoundException("Não foram encontrados Membros");
+                throw new NotFoundException("Não existem endereços nesta página");
             }
 
             return page;
