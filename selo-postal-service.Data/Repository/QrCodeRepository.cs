@@ -20,7 +20,7 @@ namespace selo_postal_service.Data.Repository
                 QRCodeData qrCodeData = qrGenerator.CreateQrCode(item.ToString(), QRCodeGenerator.ECCLevel.Q);
                 QRCode qrCode = new QRCode(qrCodeData);
                 Bitmap qrCodeImage = qrCode.GetGraphic(20);
-                string gerarNomeArquivo = @"..\..\QRCode\Pesquisa " + item.Nome + ".tsv";
+                string gerarNomeArquivo = @"..\..\QRCode\Pesquisa " + item.Nome + ".png";
                 qrCodeImage.Save(gerarNomeArquivo);
 
                 listToTsv.Add(new TsvObjectItem(item.Nome, item.EnderecoCasa, item.NumeroCasa, item.CodigoPostal, item.Bairro, item.Cidade, item.Estado, gerarNomeArquivo));
