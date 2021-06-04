@@ -14,11 +14,6 @@ namespace selo_postal_service.Core.Domain.Entities
         public int Number { get { return number; } }
         public int Limit { get { return limit; } }
 
-        public bool ValidPageLimit(int limit)
-        {
-            return PageLimits.Exists(e => e == limit);
-        }
-
         public PageRequest() { }
 
         public static PageRequest Of(Nullable<int> number, Nullable<int> limit)
@@ -52,13 +47,10 @@ namespace selo_postal_service.Core.Domain.Entities
                 pr.limit = 100;
             }
 
-            System.Console.WriteLine(pr.limit);
             return pr;
 
         }
 
         public static PageRequest First() => Of(1, DefaultPageLimit);
-        public static PageRequest First(Nullable<int> limit) => Of(1, limit);
-
     }
 }

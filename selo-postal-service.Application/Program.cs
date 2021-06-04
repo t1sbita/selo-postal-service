@@ -15,7 +15,8 @@ namespace selo_postal_service.Application
         {
             EnderecoController enderecoController = new EnderecoController(new EnderecoService(new EnderecoRepository()), new ArquivoService(new ArquivoRepository()), new QrCodeService(new QrCodeRepository()));
 
-            enderecoController.Search("Salvador", "Bahia", null, 1, null);
+            string retorno = enderecoController.Search("Salvador", "Bahia", null, 2, 5);
+            Console.WriteLine("Arquivo tsv criado com nome: " + retorno.Substring(13));
         }
     }
 }

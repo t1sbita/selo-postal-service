@@ -10,6 +10,6 @@ namespace selo_postal_service.Core.Interfaces
         /// <summary>
         /// Cria um arquivo .tsv com o resultado da query
         /// </summary>
-        void CreateArchive(IEnumerable<TsvObjectItem> list);
+        string CreateArchive(IEnumerable<TsvObjectItem> list);
     }
 }

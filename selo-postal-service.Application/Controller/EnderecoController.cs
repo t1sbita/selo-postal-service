@@ -21,13 +21,13 @@ namespace selo_postal_service.Application.Controller
             _qrCoderService = qrCoderService;
         }
 
-        public void Search(string cidade, string estado, string codigoPostal, Nullable<int> number, Nullable<int> limit)
+        public string Search(string cidade, string estado, string codigoPostal, Nullable<int> number, Nullable<int> limit)
         {
             SearchEnderecoQueryItem searchEnderecoQueryItem = new SearchEnderecoQueryItem(cidade, estado, codigoPostal);
             PageRequest pageRequest = PageRequest.Of(number, limit);
 
             List<Endereco> listResult = _enderecoService.GetByParameters(searchEnderecoQueryItem, pageRequest);
-            _arquivoService.CreateArchive(_qrCoderService.GetQrCode(listResult));
+            return _arquivoService.CreateArchive(_qrCoderService.GetQrCode(listResult));
         }
     }
 }

@@ -12,10 +12,6 @@ namespace selo_postal_service.Core.Domain.Entities
         public string Cidade { get; }
         public string Estado { get; }
 
-        public Endereco()
-        {
-
-        }
         public Endereco(string nome, string enderecoCasa, string numeroCasa, string codigoPostal, string bairro, string cidade, string estado)
         {
             this.Nome = nome;

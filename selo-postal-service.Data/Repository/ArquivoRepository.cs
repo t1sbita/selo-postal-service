@@ -14,11 +14,17 @@ namespace selo_postal_service.Data.Repository
         /// <summary>
         /// Cria um arquivo .tsv com o resultado da query
         /// </summary>
-        public void CreateArchive(IEnumerable<TsvObjectItem> list)
+        public string CreateArchive(IEnumerable<TsvObjectItem> list)
         {
             string gerarNomeArquivo = DateTime.Now.ToString("u").Replace(":", "");
+            string path = @"..\..\..\TSV";
 
-            string novoArquivo = @"..\..\TSV\Pesquisa " + gerarNomeArquivo + ".tsv";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string novoArquivo = @"..\..\..\TSV\Pesquisa " + gerarNomeArquivo + ".tsv";
 
             HeaderEndereco header = new HeaderEndereco();  
             using (FileStream fluxoDeArquivo = new FileStream(novoArquivo, FileMode.Create))
@@ -35,6 +41,7 @@ namespace selo_postal_service.Data.Repository
 
                 }
             }
+            return novoArquivo;
         }
     }
 }

@@ -15,21 +15,24 @@ namespace selo_postal_service.Data.Repository
 
         public List<Endereco> GetByParamets(SearchEnderecoQueryItem enderecoQueryItem, PageRequest pr)
         {
-            IQueryable<Endereco> resultadoPesquisaEndereco = ListaEnderecos.RetornaLista().AsQueryable();
 
-            if (!String.IsNullOrWhiteSpace(enderecoQueryItem.Cidade))
-            {
-                resultadoPesquisaEndereco = resultadoPesquisaEndereco.Where(x => x.Cidade == enderecoQueryItem.Cidade);
-            }
+            IQueryable<Endereco> listaEndereco = ListaEnderecos.RetornaLista().AsQueryable();
+            IQueryable<Endereco> resultadoPesquisaEndereco = new List<Endereco>().AsQueryable();
+
 
             if (!String.IsNullOrWhiteSpace(enderecoQueryItem.Estado))
             {
-                resultadoPesquisaEndereco = resultadoPesquisaEndereco.Where(x => x.Estado == enderecoQueryItem.Estado);
+                resultadoPesquisaEndereco = listaEndereco.Where(x => x.Estado == enderecoQueryItem.Estado);
+            }
+
+            if (!String.IsNullOrWhiteSpace(enderecoQueryItem.Cidade))
+            {
+                resultadoPesquisaEndereco = listaEndereco.Where(x => x.Cidade == enderecoQueryItem.Cidade);
             }
 
             if (!String.IsNullOrWhiteSpace(enderecoQueryItem.CodigoPostal))
             {
-                resultadoPesquisaEndereco = resultadoPesquisaEndereco.Where(x => x.CodigoPostal == enderecoQueryItem.CodigoPostal);
+                resultadoPesquisaEndereco = listaEndereco.Where(x => x.CodigoPostal == enderecoQueryItem.CodigoPostal);
             }
 
             var page = Pagination<Endereco>.For(resultadoPesquisaEndereco, pr).ToList();

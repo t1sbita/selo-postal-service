@@ -16,9 +16,9 @@ namespace selo_postal_service.Core.Services
             _arquivoRepository = arquivoRepository;
         }
 
-        public void CreateArchive(IEnumerable<TsvObjectItem> list)
+        public string CreateArchive(IEnumerable<TsvObjectItem> list)
         {
-            _arquivoRepository.CreateArchive(list);
+            return _arquivoRepository.CreateArchive(list);
         }
     }
 }
