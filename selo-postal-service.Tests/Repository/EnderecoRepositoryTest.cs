@@ -19,7 +19,7 @@ namespace selo_postal_service.Tests.Repository
         public void SetUp()
         {
             enderecoRepository = new EnderecoRepository();
-            searchEnderecoQueryItem = new SearchEnderecoQueryItem(null, null, null);
+            searchEnderecoQueryItem = new SearchEnderecoQueryItem("incorreto", "inexistente", null);
             pageRequest = PageRequest.First();
         }
 
