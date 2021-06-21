@@ -1,29 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using selo_postal_service.Core;
+
+using Microsoft.Extensions.DependencyInjection;
+using selo_postal_service.Application.Controller.Interface;
+using selo_postal_service.Application.Controller;
+using selo_postal_service.Core.Services.Interfaces;
+using selo_postal_service.Core.Services;
+using selo_postal_service.Core.Interfaces;
+using selo_postal_service.Data.Repository;
 
 namespace selo_postal_service.Application
 {
     class Program
-    {   
-        
+    {
         static void Main(string[] args)
         {
-            
-          EnderecoRepository er = new EnderecoRepository();
+            var serviceProvider = new ServiceCollection()
+            .AddSingleton<IEnderecoController, EnderecoController>()
+            .AddSingleton<IEnderecoService, EnderecoService>()
+            .AddSingleton<IEnderecoRepository, EnderecoRepository>()
+            .AddSingleton<IQrCodeService, QrCodeService>()
+            .AddSingleton<IQrCodeRepository, QrCodeRepository>()
+            .AddSingleton<IArquivoService, ArquivoService>()
+            .AddSingleton<IArquivoRepository, ArquivoRepository>()
+            .BuildServiceProvider();
 
 
-            PageRequest pr = PageRequest.Of(2, 20);
+            var search = serviceProvider.GetService<IEnderecoController>();
 
-            Dados.DTO.SearchEnderecoQueryItem pa = new Dados.DTO.SearchEnderecoQueryItem {
-                Cidade = "Salvador",
-                CodigoPostal = "CD548J2547"
-            };
+            string cidade = String.Empty;
+            string estado = String.Empty;
+            string codigoPostal = String.Empty;
 
-            var l =  er.GetByParamets(pa, pr);
+            int? number = null;
+            int? limit = null;
 
-            l.ForEach(e => Console.WriteLine(e.Nome));
 
+            search.Search(cidade, estado, codigoPostal, number, limit);
         }
     }
 }
