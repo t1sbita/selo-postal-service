@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using selo_postal_service.Core.Domain.Entities;
 using selo_postal_service.Core.Domain.DTO;
 using selo_postal_service.Core.Services.Interfaces;
+using selo_postal_service.Application.Controller.Interface;
 
 namespace selo_postal_service.Application.Controller
 {
-    public class EnderecoController
+    public class EnderecoController : IEnderecoController
     {
         
         private readonly IEnderecoService _enderecoService;

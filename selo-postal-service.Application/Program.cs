@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+
+using Microsoft.Extensions.DependencyInjection;
+using selo_postal_service.Application.Controller.Interface;
 using selo_postal_service.Application.Controller;
-using selo_postal_service.Core.Domain.DTO;
-using selo_postal_service.Core.Domain.Entities;
-using selo_postal_service.Core.Services;
 using selo_postal_service.Core.Services.Interfaces;
+using selo_postal_service.Core.Services;
+using selo_postal_service.Core.Interfaces;
 using selo_postal_service.Data.Repository;
 
 namespace selo_postal_service.Application
@@ -13,10 +14,28 @@ namespace selo_postal_service.Application
     {
         static void Main(string[] args)
         {
-            EnderecoController enderecoController = new EnderecoController(new EnderecoService(new EnderecoRepository()), new ArquivoService(new ArquivoRepository()), new QrCodeService(new QrCodeRepository()));
+            var serviceProvider = new ServiceCollection()
+            .AddSingleton<IEnderecoController, EnderecoController>()
+            .AddSingleton<IEnderecoService, EnderecoService>()
+            .AddSingleton<IEnderecoRepository, EnderecoRepository>()
+            .AddSingleton<IQrCodeService, QrCodeService>()
+            .AddSingleton<IQrCodeRepository, QrCodeRepository>()
+            .AddSingleton<IArquivoService, ArquivoService>()
+            .AddSingleton<IArquivoRepository, ArquivoRepository>()
+            .BuildServiceProvider();
 
-            string retorno = enderecoController.Search("Salvador", "Bahia", null, 2, 5);
-            Console.WriteLine("Arquivo tsv criado com nome: " + retorno.Substring(13));
+
+            var search = serviceProvider.GetService<IEnderecoController>();
+
+            string cidade = String.Empty;
+            string estado = String.Empty;
+            string codigoPostal = String.Empty;
+
+            int? number = null;
+            int? limit = null;
+
+
+            search.Search(cidade, estado, codigoPostal, number, limit);
         }
     }
 }

@@ -26,19 +26,23 @@ namespace selo_postal_service.Data.Repository
 
             string novoArquivo = @"..\..\..\TSV\Pesquisa " + gerarNomeArquivo + ".tsv";
 
-            HeaderEndereco header = new HeaderEndereco();  
+            System.Console.WriteLine(Path.GetFullPath(novoArquivo));
+            
+            HeaderEndereco header = new HeaderEndereco();
             using (FileStream fluxoDeArquivo = new FileStream(novoArquivo, FileMode.Create))
-            using (StreamWriter writer = new StreamWriter(fluxoDeArquivo, Encoding.UTF8))
             {
-                //writer.WriteLine($"quantidadePorPagina\tPaginaAtual\tQuantidadePaginas\tTotalRegistros");
-                writer.WriteLine(header.ToString());
-                writer.Flush();
-                
-                foreach (TsvObjectItem item in list)
+                using (StreamWriter writer = new StreamWriter(fluxoDeArquivo, Encoding.UTF8))
                 {
-                    writer.WriteLine(item.ToString());
+                    //writer.WriteLine($"quantidadePorPagina\tPaginaAtual\tQuantidadePaginas\tTotalRegistros");
+                    writer.WriteLine(header.ToString());
                     writer.Flush();
 
+                    foreach (TsvObjectItem item in list)
+                    {
+                        writer.WriteLine(item.ToString());
+                        writer.Flush();
+
+                    }
                 }
             }
             return novoArquivo;
