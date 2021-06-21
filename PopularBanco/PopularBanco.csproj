@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\selo-postal-api.Core\selo-postal-api.Core.csproj" />
+    <ProjectReference Include="..\selo-postal-api.Data\selo-postal-api.Data.csproj" />
+  </ItemGroup>
+
+</Project>
