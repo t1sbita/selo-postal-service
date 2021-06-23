@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using selo_postal_api.Api.Controllers;
+using selo_postal_api.Api.Authorization;
 using selo_postal_api.Core.Interfaces;
 using selo_postal_api.Core.Services;
 using selo_postal_api.Core.Services.Interfaces;
@@ -36,20 +36,82 @@ namespace selo_postal_api.Api
         {
             services.AddDbContext<PostgresContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("PostgresContext")));
-            
+
 
             services.AddScoped<IEnderecoService, EnderecoService>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
             services.AddScoped<IQrCodeService, QrCodeService>();
             services.AddScoped<IQrCodeRepository, QrCodeRepository>();
-            services.AddScoped<IArquivoService, ArquivoService>();
-            services.AddScoped<IArquivoRepository, ArquivoRepository>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
-           
             services.AddControllers();
+
+            var key = Encoding.ASCII.GetBytes(Settings.Secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo{ Title = "selo_postal_api.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Selo Postal.Api",
+                    Version = "v1",
+                    Description = "API para gerar QrCodes de endereços",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Elias Garcia",
+                        Email = "elias.sgarcia@gmail.com"
+                    }
+                });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"Bearer", new string[] { }},
+                };
+
+                c.AddSecurityDefinition(
+                    "Bearer",
+                    new OpenApiSecurityScheme
+                    {
+                        In = ParameterLocation.Header,
+                        Description = "Copie 'Bearer ' + token'",
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.ApiKey
+
+                    });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        }, new List<string>()
+                    }
+                });
+
             });
         }
 
@@ -58,8 +120,9 @@ namespace selo_postal_api.Api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                
+                app.UseExceptionHandler("/error");
+                //app.UseDeveloperExceptionPage();
+
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "selo_postal_api.Api v1"));
             }
@@ -68,6 +131,7 @@ namespace selo_postal_api.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
