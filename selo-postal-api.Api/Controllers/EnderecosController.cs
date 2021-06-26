@@ -6,6 +6,7 @@ using selo_postal_api.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 using selo_postal_api.Core.Domain.Models;
+using System;
 
 namespace selo_postal_api.Api.Controllers
 {
@@ -36,7 +37,7 @@ namespace selo_postal_api.Api.Controllers
         /// <response code="401">"Token Invalido ou expirado!"</response>
         /// <response code="404">"Nao existem enderecos registrados para esta pesquisa"</response>
         [HttpGet]
-        public IActionResult Search(
+        public IActionResult GetByParameters(
             [FromQuery] SearchEnderecoQueryItem filtro,
             [FromQuery] int number,
             [FromQuery] int limit)
@@ -44,13 +45,27 @@ namespace selo_postal_api.Api.Controllers
             PageRequest pr = PageRequest.Of(number, limit);
             List<EnderecoModel> listResult = _enderecoService.GetByParameters(filtro, pr);
 
-            if (listResult.Count == 0)
+            if (listResult == null || listResult.Count == 0 )
             {
                 return NotFound();
             }
 
             return Ok(listResult);
         }
+        /// <summary>
+        /// Pesquisa paginada baseada em ID
+        /// </summary>
+        /// <param name="id">Define o id para pesquisa</param>
+        /// <returns>Retorna um endereco</returns>
+        /// <response code="200">Endereco retornado com sucesso</response>
+        /// <response code="401">"Token Invalido ou expirado!"</response>
+        /// <response code="404">"Nao existem enderecos registrados para este id"</response>
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            return Ok(_enderecoService.GetById(id));
+        }
+
 
         /// <summary>
         /// Retorna o QrCode para um determinado endereco
@@ -61,9 +76,9 @@ namespace selo_postal_api.Api.Controllers
         /// <response code="401">"Token Invalido ou expirado!"</response>
         /// <response code="404">"Endereco Incorreto ou inexistente"</response>
         [HttpGet("{id}/qrcode")]
-        public IActionResult QrCodes(int id)
+        public IActionResult GetQrCodes(int id)
         {
-            byte[] img = _qrCoderService.RecuperaQrCode(id);
+            byte[] img = _qrCoderService.GetQrCode(id);
 
             if (img != null)
             {
@@ -94,6 +109,7 @@ namespace selo_postal_api.Api.Controllers
                 return BadRequest();
             }
         }
+
         /// <summary>
         /// Altera o endereço solicitado
         /// </summary>
@@ -105,10 +121,19 @@ namespace selo_postal_api.Api.Controllers
         /// <response code="401">Token inválido ou expirado</response>
         /// <response code="404">Endereco nao encontrado</response>
         [HttpPut("{id}")]
-        public IActionResult AlterarEndereco(int id, EnderecoModel endereco)
+        public IActionResult Update(int id, EnderecoModel endereco)
         {
-            var enderecoModificado = _enderecoService.AlterarEndereco(id, endereco);
-            return Ok(enderecoModificado);
+            if (ModelState.IsValid)
+            {
+                var enderecoModificado = _enderecoService.Update(id, endereco);
+                return Ok(enderecoModificado);
+
+            }
+            else
+            {
+                return BadRequest();
+            }
+            
         }
 
         /// <summary>
@@ -121,7 +146,7 @@ namespace selo_postal_api.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Remove(int id)
         {
-            _enderecoService.Remover(id);
+            _enderecoService.Remove(id);
 
             return NoContent();
         }

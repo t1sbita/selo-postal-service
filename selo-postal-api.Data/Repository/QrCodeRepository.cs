@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using QRCoder;
 
-using selo_postal_api.Core.Domain.DTO;
 using selo_postal_api.Core.Domain.Entities;
 using selo_postal_api.Core.Interfaces;
 using selo_postal_api.Data.Context;
@@ -16,65 +15,12 @@ namespace selo_postal_api.Data.Repository
     public class QrCodeRepository : IQrCodeRepository
     {
         public readonly PostgresContext _context;
+
         public QrCodeRepository(PostgresContext context)
         {
             _context = context;
         }
-        public List<TsvObjectItem> GetQrCode(List<Endereco> list)
-        {
-            List<TsvObjectItem> listToTsv = new List<TsvObjectItem>();
-            
-            foreach (var item in list)
-            {
-                QRCodeGenerator qrGenerator = new QRCodeGenerator();
-                QRCodeData qrCodeData = qrGenerator.CreateQrCode(item.ToString(), QRCodeGenerator.ECCLevel.Q);
-                QRCode qrCode = new QRCode(qrCodeData);
-                Bitmap qrCodeImage = qrCode.GetGraphic(20);
 
-                Etiqueta etiqueta = new Etiqueta(ToByteArray(qrCodeImage), item);
-
-                _context.Etiqueta.Add(etiqueta);
-                _context.SaveChanges();
-
-                var tsvObject = TsvObjectItem.Build().WithName("fsad").WithEndereco("sdas").WithNumero(item.Cidade == null ? null : item.Cidade.Municipio);
-
-                if (item.Cidade != null)
-                {
-                    
-                    listToTsv.Add(
-                        new TsvObjectItem(
-                            item.Nome, 
-                            item.EnderecoCasa, 
-                            item.NumeroCasa, 
-                            item.CodigoPostal, 
-                            item.Bairro, 
-                            item.Cidade.Municipio, 
-                            item.Cidade.Estado, 
-                            $"https://localhost:5001/api/Endereco/{etiqueta.Id}/qrcode"
-                            )
-                        );
-                    
-                }
-                else
-                {
-                    listToTsv.Add(
-                        new TsvObjectItem(
-                            item.Nome, 
-                            item.EnderecoCasa, 
-                            item.NumeroCasa, 
-                            item.CodigoPostal, 
-                            item.Bairro, 
-                            "null", 
-                            "null", 
-                            $"https://localhost:5001/api/Endereco/{etiqueta.Id}/qrcode"
-                            )
-                        );
-                }
-                
-            }
-
-            return listToTsv;
-        }
 
         public static byte[] ToByteArray(Bitmap bitmap)
         {
@@ -89,9 +35,20 @@ namespace selo_postal_api.Data.Repository
             }
         }
 
-        public byte[] RecuperaQrCode(int id)
+        public byte[] GetQrCode(int id)
         {
-            return _context.Etiqueta.Where(i => i.Id == id).Select(e => e.CodigoQr).FirstOrDefault();
+            Endereco endereco = _context.Endereco.Include(c => c.Cidade).FirstOrDefault(e => e.Id == id);
+            if (endereco != null)
+            {
+                QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                QRCodeData qrCodeData = qrGenerator.CreateQrCode(endereco.ToString(), QRCodeGenerator.ECCLevel.Q);
+                QRCode qrCode = new QRCode(qrCodeData);
+                Bitmap qrCodeImage = qrCode.GetGraphic(20);
+
+                return ToByteArray(qrCodeImage);
+            }
+            return null;
+
         }
     }
 }

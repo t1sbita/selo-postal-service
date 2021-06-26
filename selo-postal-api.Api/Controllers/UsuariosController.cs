@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using selo_postal_api.Api.Authorization;
 using selo_postal_api.Core.Domain.Entities;
+using selo_postal_api.Core.Domain.Models;
 using selo_postal_api.Core.Services.Interfaces;
 
 namespace selo_postal_api.Api.Controllers
@@ -28,12 +29,12 @@ namespace selo_postal_api.Api.Controllers
         /// <response code="401">"Token Invalido ou expirado!"</response>
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public IActionResult AdicionarUsuario([FromBody] Usuario model)
+        public IActionResult Add([FromBody] Usuario model)
         {
-            if (_usuarioService.VerificaExistente(model))
+            if (!_usuarioService.VerificaExistente(model))
             {
 
-                Usuario usuario = _usuarioService.AdicionarUsuario(model);
+                Usuario usuario = _usuarioService.Add(model);
                 if (usuario == null)
                 {
                     return BadRequest("Dados incorretos, verifique");
@@ -55,10 +56,10 @@ namespace selo_postal_api.Api.Controllers
         /// <response code="404">"Usuario ou senha incorretos"</response>
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<dynamic>> Autenticar([FromBody] Usuario model)
+        public IActionResult Authenticate([FromBody] Usuario model)
         {
 
-            var usuario = _usuarioService.Autenticar(model);
+            var usuario = _usuarioService.Authenticate(model);
 
             if (usuario == null)
             {
@@ -67,11 +68,11 @@ namespace selo_postal_api.Api.Controllers
 
             var token = TokenService.GerarToken(usuario);
             usuario.Password = "";
-            return new
+            return Ok(new UsuarioModel()
             {
-                user = usuario.Login,
-                token = token
-            };
+                Login = usuario.Login,
+                Token = token
+            });
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace selo_postal_api.Api.Controllers
         /// <response code="404">Usuario nao encontrado</response>
         [Authorize]
         [HttpPatch("{id}")]
-        public IActionResult Atualizar([FromRoute] int id, [FromBody] Usuario model)
+        public IActionResult Update([FromRoute] int id, [FromBody] Usuario model)
         {
             string loginUsuario = _usuarioService.RetornaLogin(id);
 
@@ -94,7 +95,7 @@ namespace selo_postal_api.Api.Controllers
             {
                 return BadRequest("Usuário incorreto / não existe");
             }
-            var user = _usuarioService.AtualizaSenha(id, model);
+            var user = _usuarioService.Update(id, model);
             return Ok(user);
 
         }

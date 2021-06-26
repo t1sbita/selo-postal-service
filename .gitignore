@@ -442,6 +442,7 @@ $RECYCLE.BIN/
 ## Visual Studio Code
 ##
 .vscode
+.sonarqube
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

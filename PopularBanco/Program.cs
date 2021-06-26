@@ -6,13 +6,11 @@ using System.Linq;
 
 namespace PopularBanco
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("Carregando informações no Banco:");
-
-            PopularBanco banco = new PopularBanco();
 
             var optionsBuilder = new DbContextOptionsBuilder<PostgresContext>();
             optionsBuilder
@@ -22,13 +20,13 @@ namespace PopularBanco
             {
                 if (!ctx.Cidade.Any())
                 {
-                    ctx.Cidade.AddRange(banco.PopularCidade());
+                    ctx.Cidade.AddRange(PopularBanco.PopularCidade());
                     ctx.SaveChanges();
                 }
                 
                 if (!ctx.Endereco.Any())
                 {
-                    foreach (var item in banco.PopularEntradaEndereco())
+                    foreach (var item in PopularBanco.PopularEntradaEndereco())
                     {
                         Endereco endereco = new Endereco(
                             nome: item.Nome,

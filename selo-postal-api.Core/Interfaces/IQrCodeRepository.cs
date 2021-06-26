@@ -7,7 +7,6 @@ namespace selo_postal_api.Core.Interfaces
 {
     public interface IQrCodeRepository
     {
-        List<TsvObjectItem> GetQrCode(List<Endereco> list);
-        byte[] RecuperaQrCode(int id);
+        byte[] GetQrCode(int id);
     }
 }

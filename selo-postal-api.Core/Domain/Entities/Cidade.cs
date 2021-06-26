@@ -8,19 +8,13 @@ using System.Threading.Tasks;
 
 namespace selo_postal_api.Core.Domain.Entities
 {
-    [Table("cidade")]
     public class Cidade
     {
-        [Key]
-        
-        [Column("id")]
         public int Id { get; set; }
-        [Column("municipio")]
         public string Municipio { get; set; }
-        [Column("estado")]
         public string Estado { get; set; }
-
         public virtual ICollection<Endereco> Enderecos { get; set; }
+
 
         public Cidade()
         {

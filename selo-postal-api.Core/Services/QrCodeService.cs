@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-
-using selo_postal_api.Core.Domain.DTO;
-using selo_postal_api.Core.Domain.Entities;
 using selo_postal_api.Core.Interfaces;
 using selo_postal_api.Core.Services.Interfaces;
 
@@ -11,19 +7,14 @@ namespace selo_postal_api.Core.Services
     {
         private readonly IQrCodeRepository _qrCodeRepository;
 
-        public QrCodeService(IQrCodeRepository enderecoRepository)
+        public QrCodeService(IQrCodeRepository qrCodeRepository)
         {
-            _qrCodeRepository = enderecoRepository;
+            _qrCodeRepository = qrCodeRepository;
         }
 
-        public List<TsvObjectItem> GetQrCode(List<Endereco> list)
+        public byte[] GetQrCode(int id)
         {
-            return _qrCodeRepository.GetQrCode(list);
-        }
-
-        public byte[] RecuperaQrCode(int id)
-        {
-            return _qrCodeRepository.RecuperaQrCode(id);
+            return _qrCodeRepository.GetQrCode(id);
         }
     }
 }
