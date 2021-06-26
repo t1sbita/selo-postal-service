@@ -53,19 +53,20 @@ namespace selo_postal_api.Data.Repository
 
         public Endereco GetById(int id)
         {
-            try
-            {
-                return _context.Endereco
-                .Include(c => c.Cidade)
-                .FirstOrDefault(e => e.Id == id)
-                ;
-            }
-            catch (NotFoundException e)
-            {
 
-                throw new NotFoundException("Id de endereço não encontrado", e);
+            var endereco = _context.Endereco
+            .Include(c => c.Cidade)
+            .FirstOrDefault(e => e.Id == id);
+
+            if (endereco != null)
+            {
+                return endereco;
             }
-            
+            else
+            {
+                throw new NotFoundException("Id de endereço não encontrado");
+            }
+
         }
 
         public Endereco Add(EnderecoModel endereco)
@@ -86,13 +87,8 @@ namespace selo_postal_api.Data.Repository
 
         public Endereco Update(int id, EnderecoModel endereco)
         {
-            var enderecoOriginal = _context.Endereco.FirstOrDefault(e => e.Id == id);
+            var enderecoOriginal = GetById(id);
             var cidadeNova = _context.Cidade.FirstOrDefault(c => c.Id == endereco.Cidade);
-
-            if (enderecoOriginal == null)
-            {
-                throw new NotFoundException("Id do endereco incorreto");
-            }
 
             if (cidadeNova == null)
             {
@@ -113,7 +109,7 @@ namespace selo_postal_api.Data.Repository
             return enderecoOriginal;
         }
 
-        
+
         public void Remove(int id)
         {
             Endereco endereco = GetById(id);

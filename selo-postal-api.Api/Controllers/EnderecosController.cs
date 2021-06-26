@@ -142,7 +142,8 @@ namespace selo_postal_api.Api.Controllers
         /// <param name="id">Id do endereco a ser removido</param>
         /// <returns></returns>
         /// <response code="204">Endereco foi removido e nao se encontra na base de dados</response>
-        /// <response code="401">"Token Invalido ou expirado!"</response>
+        /// <response code="401">"Token Invalido ou expirado!"</response>]
+        /// <response code="404">Endereco nao encontrado</response>
         [HttpDelete("{id}")]
         public IActionResult Remove(int id)
         {
