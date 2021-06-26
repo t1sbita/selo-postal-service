@@ -4,6 +4,7 @@ using Moq;
 using selo_postal_api.Core.Domain.Entities;
 using selo_postal_api.Core.Interfaces;
 using selo_postal_api.Core.Services;
+using selo_postal_api.Core.Exceptions;
 
 namespace selo_postal_api.Tests.Core
 {
@@ -28,12 +29,14 @@ namespace selo_postal_api.Tests.Core
 
             novoUsuario = new Usuario()
             {
+                Id = 1,
                 Login = "usuario",
                 Password = "senhateste",
                 Role = "teste"
             };
             usuarioDiferenteDoLogado = new Usuario()
             {
+                Id = 2,
                 Login = "usuarioDiferente",
                 Password = "senhateste",
                 Role = "testeDiferente"
@@ -71,6 +74,35 @@ namespace selo_postal_api.Tests.Core
             var resultado = usuarioService.Update(id, novoUsuario);
 
             Assert.IsInstanceOf<Usuario>(resultado);
+        }
+        [TestCase(1)]
+        [TestCase(5)]
+        public void DeveRetornarLogin(int id)
+        {
+            mockUsuario.Setup(u => u.RetornaLogin(It.IsAny<int>())).Returns(novoUsuario.Login);
+
+            var resultado = usuarioService.RetornaLogin(id);
+
+            Assert.AreEqual(novoUsuario.Login, resultado);
+        }
+
+        [TestCase(1)]
+        [TestCase(5)]
+        public void VerificaSeExiste(int id)
+        {
+            mockUsuario.Setup(u => u.VerificaExistente(It.IsAny<Usuario>())).Returns(true);
+
+            var resultado = usuarioService.VerificaExistente(novoUsuario);
+
+            Assert.IsTrue(resultado);
+        }
+
+        [TestCase(50, "Usuário não encontrado!")]
+        public void RemoveUsuarioIncorreto(int id, string message){
+            mockUsuario.Setup(u => u.Remove(It.IsAny<int>())).Throws(new NotFoundException("Usuário não encontrado!"));
+            var exception = Assert.Throws<NotFoundException>(() => usuarioService.Remove(id));
+
+            Assert.That(exception.Message, Is.EqualTo(message));
         }
 
     }

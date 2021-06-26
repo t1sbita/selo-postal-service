@@ -10,11 +10,6 @@ namespace selo_postal_api.Core.Domain.DTO
         {
 
         }
-        public SearchEnderecoQueryItem(string cidade, string estado, string codigoPostal)
-        {
-            Cidade = cidade;
-            Estado = estado;
-            CodigoPostal = codigoPostal;
-        }
+        
     }
 }

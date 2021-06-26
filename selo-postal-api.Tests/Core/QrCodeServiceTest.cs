@@ -39,7 +39,7 @@ namespace selo_postal_api.Tests.Core
             byte[] imagem = null;
 
             mockQrCode.Setup(e => e.GetQrCode(It.IsAny<int>())).Returns(imagem);
-
+            
             var resultado = qrCodeService.GetQrCode(id);
 
             Assert.IsNull(resultado);

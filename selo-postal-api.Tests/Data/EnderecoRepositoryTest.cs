@@ -48,10 +48,10 @@ namespace selo_postal_api.Tests.Data
 
             var dataEndereco = new List<Endereco>
                 {
-                    new Endereco {Id = 1, Nome = "Usuario teste" , EnderecoCasa = "Endereco A", NumeroCasa="08", Bairro = "Bairro Teste",CodigoPostal = "AS323DSAS", Cidade = cidadeTeste },
-                    new Endereco {Id = 2, Nome = "Teste2" , EnderecoCasa = "Endereco B", NumeroCasa="14", Bairro = "Barro",CodigoPostal = "FRGF342D", Cidade =  dataCidade.Last()},
-                    new Endereco {Id = 3, Nome = "Testante Testado" , EnderecoCasa = "Endereco C", NumeroCasa="07", Bairro = "Bairro da Testante",CodigoPostal = "23FHGJ433", Cidade = dataCidade.First() },
-                    new Endereco {Id = 4, Nome = "Usuario Teste3", EnderecoCasa = "Endereco Teste3", NumeroCasa = "NumeroTeste3", Bairro = "Bairro Teste3", Cidade = cidadeTeste }
+                    new Endereco {Id = 1, Nome = "Usuario teste" , EnderecoCasa = "Endereco A", NumeroCasa="08", Bairro = "Bairro Teste",CodigoPostal = "AS323DSAS", Cidade = cidadeTeste , CidadeId = cidadeTeste.Id},
+                    new Endereco {Id = 2, Nome = "Teste2" , EnderecoCasa = "Endereco B", NumeroCasa="14", Bairro = "Barro",CodigoPostal = "FRGF342D", Cidade =  dataCidade.Last(), CidadeId = 102},
+                    new Endereco {Id = 3, Nome = "Testante Testado" , EnderecoCasa = "Endereco C", NumeroCasa="07", Bairro = "Bairro da Testante",CodigoPostal = "23FHGJ433", Cidade = dataCidade.First() , CidadeId = 100},
+                    new Endereco {Id = 4, Nome = "Usuario Teste3", EnderecoCasa = "Endereco Teste3", NumeroCasa = "NumeroTeste3", Bairro = "Bairro Teste3", Cidade = cidadeTeste , CidadeId = cidadeTeste.Id}
                 }.AsQueryable();
             mockCidade = new Mock<DbSet<Cidade>>();
             mockCidade.As<IQueryable<Cidade>>().Setup(m => m.Provider).Returns(dataCidade.Provider);
@@ -129,7 +129,9 @@ namespace selo_postal_api.Tests.Data
 
             filtro = new SearchEnderecoQueryItem()
             {
-                Cidade = "MunicipioTeste"
+                Cidade = "MunicipioTeste",
+                CodigoPostal = "AS323DSAS",
+                Estado = "TE"
             };
 
             filtroInvalido = new SearchEnderecoQueryItem()

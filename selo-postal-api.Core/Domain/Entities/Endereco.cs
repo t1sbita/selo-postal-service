@@ -40,14 +40,5 @@ namespace selo_postal_api.Core.Domain.Entities
 
         }
 
-        public override string ToString()
-        {
-            if (Cidade == null)
-            {
-                return $"{Nome}\t{EnderecoCasa}\t{NumeroCasa}\t{CodigoPostal}\t{Bairro}\tInexistente\tInexistente";
-            }
-            return $"{Nome}\t{EnderecoCasa}\t{NumeroCasa}\t{CodigoPostal}\t{Bairro}\t{Cidade.Municipio}\t{Cidade.Estado}";
-        }
-
     }
 }

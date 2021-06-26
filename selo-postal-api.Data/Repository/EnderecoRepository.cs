@@ -119,10 +119,7 @@ namespace selo_postal_api.Data.Repository
                 _context.Endereco.Remove(endereco);
                 _context.SaveChanges();
             }
-            else
-            {
-                throw new NotFoundException("Endereço não encontrado!");
-            }
+            
         }
     }
 }

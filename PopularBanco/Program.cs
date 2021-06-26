@@ -26,7 +26,7 @@ namespace PopularBanco
                 
                 if (!ctx.Endereco.Any())
                 {
-                    foreach (var item in PopularBanco.PopularEntradaEndereco())
+                    foreach (var item in PopularBanco.PopularEndereco())
                     {
                         Endereco endereco = new Endereco(
                             nome: item.Nome,
@@ -34,7 +34,7 @@ namespace PopularBanco
                             numeroCasa: item.NumeroCasa,
                             codigoPostal: item.CodigoPostal,
                             bairro: item.Bairro,
-                            cidade: ctx.Cidade.Where(i => i.Municipio == item.Cidade).FirstOrDefault()
+                            cidade: ctx.Cidade.Where(i => i.Id == item.Cidade).FirstOrDefault()
                             );
 
                         ctx.Endereco.Add(endereco);

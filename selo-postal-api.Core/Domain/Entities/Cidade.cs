@@ -21,10 +21,5 @@ namespace selo_postal_api.Core.Domain.Entities
 
         }
 
-        public Cidade(string municipio, string estado)
-        {
-            Municipio = municipio;
-            Estado = estado;
-        }
     }
 }

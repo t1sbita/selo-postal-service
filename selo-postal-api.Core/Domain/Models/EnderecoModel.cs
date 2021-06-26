@@ -19,16 +19,6 @@ namespace selo_postal_api.Core.Domain.Models
           
         }
 
-        public EnderecoModel(string nome, string enderecoCasa, string numeroCasa, string bairro, string codigoPostal, int cidade)
-        {
-            this.Nome = nome;
-            this.EnderecoCasa = enderecoCasa;
-            this.NumeroCasa = numeroCasa;
-            this.Bairro = bairro;
-            this.CodigoPostal = codigoPostal;
-            this.Cidade = cidade;
-            
-        }
     }
 
 

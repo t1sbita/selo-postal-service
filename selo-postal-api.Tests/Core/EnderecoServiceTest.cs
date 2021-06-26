@@ -7,7 +7,7 @@ using selo_postal_api.Core.Services;
 using selo_postal_api.Core.Domain.Models;
 using selo_postal_api.Core.Domain.DTO;
 using selo_postal_api.Core.Domain.Entities;
-
+using selo_postal_api.Core.Exceptions;
 
 namespace selo_postal_api.Tests.Core
 {
@@ -155,6 +155,13 @@ namespace selo_postal_api.Tests.Core
             Assert.IsInstanceOf<EnderecoModel>(resultado);
         }
 
+        [TestCase(50, "Endereço não encontrado!")]
+        public void RemoveUsuarioIncorreto(int id, string message){
+            mockEndereco.Setup(u => u.Remove(It.IsAny<int>())).Throws(new NotFoundException("Endereço não encontrado!"));
+            var exception = Assert.Throws<NotFoundException>(() => enderecoService.Remove(id));
+
+            Assert.That(exception.Message, Is.EqualTo(message));
+        }
         
     }
 }
