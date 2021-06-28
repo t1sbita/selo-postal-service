@@ -13,6 +13,7 @@ namespace selo_postal_api.Core.Domain.Models
         public int Cidade { get; set; }
         public DateTime CriadoEm { get; set; }
         public DateTime ModificadoEm { get; set; }
+        public string QrCode { get; set; }
 
         public EnderecoModel()
         {

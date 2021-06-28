@@ -52,7 +52,8 @@ namespace selo_postal_api.Core.Services
                         CodigoPostal = endereco.CodigoPostal,
                         Cidade = endereco.Cidade.Id,
                         CriadoEm = endereco.CriadoEm,
-                        ModificadoEm = endereco.ModificadoEm
+                        ModificadoEm = endereco.ModificadoEm,
+                        QrCode = $"https://localhost:5001/api/Enderecos/{endereco.Id}/qrcode"
                     }
                 );
             }
@@ -73,7 +74,8 @@ namespace selo_postal_api.Core.Services
                 CodigoPostal = endereco.CodigoPostal,
                 Cidade = endereco.Cidade.Id,
                 CriadoEm = endereco.CriadoEm,
-                ModificadoEm = endereco.ModificadoEm
+                ModificadoEm = endereco.ModificadoEm,
+                QrCode = $"https://localhost:5001/api/Enderecos/{endereco.Id}/qrcode"
             };
         }
 
@@ -89,7 +91,8 @@ namespace selo_postal_api.Core.Services
                 CodigoPostal = enderecoBanco.CodigoPostal,
                 Cidade = enderecoBanco.Cidade.Id,
                 CriadoEm = enderecoBanco.CriadoEm,
-                ModificadoEm = enderecoBanco.ModificadoEm
+                ModificadoEm = enderecoBanco.ModificadoEm,
+                QrCode = $"https://localhost:5001/api/Enderecos/{enderecoBanco.Id}/qrcode"
             };
 
             return model;
