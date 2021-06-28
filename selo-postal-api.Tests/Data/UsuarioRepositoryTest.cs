@@ -7,6 +7,7 @@ using selo_postal_api.Data.Context;
 using selo_postal_api.Data.Repository;
 using System.Collections.Generic;
 using System.Linq;
+using selo_postal_api.Core.Exceptions;
 
 namespace selo_postal_api.Tests.Data
 {
@@ -18,6 +19,7 @@ namespace selo_postal_api.Tests.Data
         private UsuarioRepository usuarioRepository;
         private Usuario novoUsuario;
         private Usuario usuarioDiferenteDoLogado;
+        private IQueryable<Usuario> dataUsuario;
 
         [SetUp]
         public void Setup()
@@ -36,11 +38,11 @@ namespace selo_postal_api.Tests.Data
                 Password = "senhateste",
                 Role = "testeDiferente"
             };
-            var dataUsuario = new List<Usuario>()
+            dataUsuario = new List<Usuario>()
             {
-                new Usuario(){Id = 1, Login = "usuario1", Password = "senhateste", Role = "teste"},
                 novoUsuario,
-                usuarioDiferenteDoLogado
+                new Usuario(){Id = 3, Login = "usuario3", Password = "senhateste", Role = "padrao"},
+                new Usuario(){Id = 4, Login = "usuario4", Password = "senhateste", Role = "padrao"},
 
             }.AsQueryable();
 
@@ -64,5 +66,85 @@ namespace selo_postal_api.Tests.Data
             mockUsuario.Verify(e => e.Add(It.IsAny<Usuario>()), Times.Once);
             mockContext.Verify(e => e.SaveChanges(), Times.Once);
         }
+
+        [Test]
+        public void RetornaUsuarioAutenticacao()
+        {
+            var resultado = usuarioRepository.Authenticate(novoUsuario.Login, novoUsuario.Password);
+            Assert.AreEqual(novoUsuario, resultado);
+        }
+
+        [Test]
+        public void RetornaUsuarioNull()
+        {
+            var resultado = usuarioRepository.Authenticate(usuarioDiferenteDoLogado.Login, usuarioDiferenteDoLogado.Password);
+            Assert.IsNull(resultado);
+        }
+
+        [TestCase(1)]
+        [TestCase(3)]
+        public void DeveRetornarLogin(int id)
+        {
+            var resultado = usuarioRepository.RetornaLogin(id);
+
+            Assert.AreEqual(dataUsuario.FirstOrDefault(x => x.Id == id).Login, resultado);
+        }
+
+        [TestCase(2)]
+        [TestCase(6)]
+        public void DeveRetornarLoginNull(int id)
+        {
+            var resultado = usuarioRepository.RetornaLogin(id);
+
+            Assert.IsNull(resultado);
+        }
+
+        [TestCase(1)]
+        [TestCase(5)]
+        public void VerificaSeExiste(int id)
+        {
+            var resultado = usuarioRepository.VerificaExistente(novoUsuario);
+
+            Assert.IsTrue(resultado);
+        }
+
+        [TestCase(1)]
+        [TestCase(3)]
+        public void AlteraUsuario(int id)
+        {
+            var resultado = usuarioRepository.Update(id, novoUsuario);
+
+            Assert.IsInstanceOf<Usuario>(resultado);
+        }
+
+        [TestCase(10)]
+        [TestCase(6)]
+        public void AlteraUsuarioInexistente(int id)
+        {
+            var resultado = usuarioRepository.Update(id, novoUsuario);
+
+            Assert.IsNull(resultado);
+        }
+        
+        
+
+        [TestCase(1)]
+        [TestCase(3)]
+        public void RemoveUsuario(int id)
+        {
+            usuarioRepository.Remove(id);
+            mockUsuario.Verify(e => e.Remove(It.IsAny<Usuario>()), Times.Once);
+            mockContext.Verify(e => e.SaveChanges(), Times.Once);
+        }
+
+        [TestCase(10)]
+        [TestCase(5)]
+        public void RemoveUsuarioInexistente(int id)
+        {
+            var exception = Assert.Throws<NotFoundException>(() => usuarioRepository.Remove(id));
+
+            Assert.That(exception.Message, Is.EqualTo("Usuario não encontrado!"));
+        }
+
     }
 }

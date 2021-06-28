@@ -75,6 +75,7 @@ namespace selo_postal_api.Tests.Core
 
             Assert.IsInstanceOf<Usuario>(resultado);
         }
+        
         [TestCase(1)]
         [TestCase(5)]
         public void DeveRetornarLogin(int id)

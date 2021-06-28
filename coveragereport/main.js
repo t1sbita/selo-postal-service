@@ -257,7 +257,7 @@ var assemblies = [
       { "name": "selo_postal_api.Data.Repository.EnderecoRepository", "rp": "selo_postal_api.Data_EnderecoRepository.html", "cl": 71, "ucl": 0, "cal": 71, "tl": 125, "ct": "LineCoverage", "mc": "-", "cb": 12, "tb": 12, "lch": [], "bch": [], "hc": [] },
       { "name": "selo_postal_api.Data.Repository.Pagination<T>", "rp": "selo_postal_api.Data_Pagination_1.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 22, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "selo_postal_api.Data.Repository.QrCodeRepository", "rp": "selo_postal_api.Data_QrCodeRepository.html", "cl": 22, "ucl": 2, "cal": 24, "tl": 54, "ct": "LineCoverage", "mc": "-", "cb": 3, "tb": 4, "lch": [], "bch": [], "hc": [] },
-      { "name": "selo_postal_api.Data.Repository.UsuarioRepository", "rp": "selo_postal_api.Data_UsuarioRepository.html", "cl": 0, "ucl": 50, "cal": 50, "tl": 86, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 8, "lch": [], "bch": [], "hc": [] },
+      { "name": "selo_postal_api.Data.Repository.UsuarioRepository", "rp": "selo_postal_api.Data_UsuarioRepository.html", "cl": 50, "ucl": 0, "cal": 50, "tl": 86, "ct": "LineCoverage", "mc": "-", "cb": 8, "tb": 8, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 

@@ -79,7 +79,7 @@ namespace selo_postal_api.Data.Repository
             }
             else
             {
-                throw new NotFoundException("Endereço não encontrado!");
+                throw new NotFoundException("Usuario não encontrado!");
             }
         }
     }
