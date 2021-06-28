@@ -10,7 +10,7 @@ using selo_postal_api.Data.Context;
 
 namespace PopularBanco
 {
-    public class PopularBanco
+    public static class PopularBanco
     {
         public static List<Cidade> PopularCidade()
         {

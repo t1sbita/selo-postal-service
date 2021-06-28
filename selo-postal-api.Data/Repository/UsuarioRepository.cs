@@ -61,12 +61,18 @@ namespace selo_postal_api.Data.Repository
 
             _context.Usuario.Attach(usuario);
             usuario.Password = model.Password;
-            _context.SaveChanges();
-            return usuario;
 
+            if (!string.IsNullOrEmpty(model.Role))
+            {
+                usuario.Role = model.Role;
+            }
+
+            _context.SaveChanges();
+
+            return usuario;
         }
 
-        public bool VerificaExistente(Usuario usuario) => (_context.Usuario.FirstOrDefault(x => x.Login == usuario.Login) != null);
+        public bool VerificaExistente(Usuario model) => (_context.Usuario.FirstOrDefault(x => x.Login == model.Login) != null);
 
         public void Remove(int id)
         {
