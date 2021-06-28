@@ -14,15 +14,46 @@ O projeto Recognize está dividido em módulos:
 | selo-postal-api.Tests| Testes Unitários                                     |
 
 
-### Fluxo do sistema
+**Atenção**
 
-1. Usuario deve obter primeiramente o token de autenticação em `/api/usuarios/login`
-1. O usuário pode escolher por quais parâmetros quer filtrar os dados (podendo escolher nenhum, ou todos disponíveis) e como pagina-los
-1. O sistema retornará uma lista com os itens da pesquisa
-1. Para cada dado filtrado, existirá um qrcodeRef, que indicará a URI do QrCode
+- **Caso esteja utilizando o Visual Studio**
 
+> Neste momento o seu Visual Studio já deve estar configurado com o .NET Core.
+
+1. Clone o projeto para sua máquina local.
+
+2. Abra o arquivo _Ceabs.FCAPlataformaDados.sln_ com o Visual Studio.
+
+3. Execute a aplicação a partir do projeto Ceabs.FCAPlataformaDados.API.
+
+> No navegador padrão da máquina será aberto uma página com o sistema, Utilize a url `<base_url:port>/swagger` e verifique se o projeto está iniciando normalmente.
+
+- **Caso esteja utilizando o Visual Studio Code**
+
+> Neste momento o seu Visual Studio Code e o .NET Core devem estar devidamente instalados na máquina.
+
+1. Clone o projeto para sua máquina local.
+
+2. Abra a pasta do projeto no editor de código.
+
+3. Aceite todas as sugestões de instalação de extensões que aparecerem assim que a pasta do projeto for aberta.
+
+4. No menu Debug, inicie o debug do projeto
+
+> No navegador padrão da máquina será aberto uma página com o sistema, Utilize a url `<base_url:port>/swagger` e verifique se o projeto está iniciando normalmente.
+
+### Gerar token JWT
+
+* Usuario deve obter o token de autenticação em `/api/usuarios/login`
 <br/>
-#### Filtros disponíveis
+## Construindo e rodando o projeto sem ide.
+
+```shell
+$ dotnet restore
+$ dotnet build
+$ dotnet run --project=.\selo-postal-api.Api\selo-postal-api.Api.csproj
+```
+
 
 #### Filtros disponíveis
 * Cidade
