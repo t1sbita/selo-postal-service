@@ -443,6 +443,8 @@ $RECYCLE.BIN/
 ##
 .vscode
 .sonarqube
+coveragereport
+coveragereport/*
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
