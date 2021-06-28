@@ -35,7 +35,7 @@ namespace selo_postal_api.Api.Controllers
         /// <response code="200">Lista retornada com sucesso</response>
         /// <response code="400">Filtro Invalido</response>
         /// <response code="401">"Token Invalido ou expirado!"</response>
-        /// <response code="404">"Nao existem enderecos registrados para esta pesquisa"</response>
+        /// <response code="204">"Nao existem enderecos registrados para esta pesquisa"</response>
         [HttpGet]
         public IActionResult GetByParameters(
             [FromQuery] SearchEnderecoQueryItem filtro,
@@ -47,7 +47,7 @@ namespace selo_postal_api.Api.Controllers
 
             if (listResult == null || listResult.Count == 0 )
             {
-                return NotFound();
+                return NoContent();
             }
 
             return Ok(listResult);
@@ -74,7 +74,7 @@ namespace selo_postal_api.Api.Controllers
         /// <returns>QrCode gerado</returns>
         /// <response code="200">QrCode gerado com sucesso</response>
         /// <response code="401">"Token Invalido ou expirado!"</response>
-        /// <response code="404">"Endereco Incorreto ou inexistente"</response>
+        /// <response code="404">"Id do Endereco Incorreto ou inexistente"</response>
         [HttpGet("{id}/qrcode")]
         public IActionResult GetQrCodes(int id)
         {

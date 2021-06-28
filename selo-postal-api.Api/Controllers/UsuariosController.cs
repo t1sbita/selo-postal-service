@@ -1,7 +1,5 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using selo_postal_api.Api.Authorization;
 using selo_postal_api.Core.Domain.Entities;
 using selo_postal_api.Core.Domain.Models;
 using selo_postal_api.Core.Services.Interfaces;
@@ -56,23 +54,17 @@ namespace selo_postal_api.Api.Controllers
         /// <response code="404">"Usuario ou senha incorretos"</response>
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Authenticate([FromBody] Usuario model)
+        public IActionResult Authenticate([FromBody] UsuarioLogin model)
         {
 
             var usuario = _usuarioService.Authenticate(model);
 
             if (usuario == null)
             {
-                return NotFound(new { message = "Usuario ou senha inválidos" });
+                return Unauthorized();
             }
+            return Ok(usuario);
 
-            var token = TokenService.GerarToken(usuario);
-            usuario.Password = "";
-            return Ok(new UsuarioModel()
-            {
-                Login = usuario.Login,
-                Token = token
-            });
         }
 
         /// <summary>

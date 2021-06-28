@@ -1,4 +1,6 @@
+using selo_postal_api.Core.Authorization;
 using selo_postal_api.Core.Domain.Entities;
+using selo_postal_api.Core.Domain.Models;
 using selo_postal_api.Core.Interfaces;
 using selo_postal_api.Core.Services.Interfaces;
 
@@ -13,9 +15,23 @@ namespace selo_postal_api.Core.Services
             _usuarioRepository = usuarioRepository;
         }
 
-        public Usuario Authenticate(Usuario usuario)
+        public UsuarioToken Authenticate(UsuarioLogin model)
         {
-            return _usuarioRepository.Authenticate(usuario.Login, usuario.Password);
+             var usuario = _usuarioRepository.Authenticate(model.Login, model.Password);
+
+            if (usuario == null)
+            {
+                return null;
+            }
+            
+            var token = TokenUtils.GerarToken(usuario);
+            usuario.Password = "";
+            return new UsuarioToken()
+            {
+                Login = usuario.Login,
+                Token = token
+            };
+
         }
 
         public string RetornaLogin(int id)

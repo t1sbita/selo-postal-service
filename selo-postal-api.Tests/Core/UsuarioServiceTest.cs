@@ -5,6 +5,7 @@ using selo_postal_api.Core.Domain.Entities;
 using selo_postal_api.Core.Interfaces;
 using selo_postal_api.Core.Services;
 using selo_postal_api.Core.Exceptions;
+using selo_postal_api.Core.Domain.Models;
 
 namespace selo_postal_api.Tests.Core
 {
@@ -17,7 +18,7 @@ namespace selo_postal_api.Tests.Core
 
         private Usuario novoUsuario;
         private Usuario usuarioDiferenteDoLogado;
-
+        private UsuarioLogin novoUsuarioEntradaModel;
 
         [SetUp]
         public void Setup()
@@ -42,6 +43,12 @@ namespace selo_postal_api.Tests.Core
                 Role = "testeDiferente"
             };
 
+            novoUsuarioEntradaModel = new UsuarioLogin()
+            {
+                Login = "usuario",
+                Password = "senhateste",
+                
+            };
 
         }
 
@@ -60,7 +67,7 @@ namespace selo_postal_api.Tests.Core
         {
             mockUsuario.Setup(u => u.Authenticate(It.IsAny<string>(), It.IsAny<string>())).Returns(novoUsuario);
 
-            var resultado = usuarioService.Authenticate(novoUsuario);
+            var resultado = usuarioService.Authenticate(novoUsuarioEntradaModel);
 
             Assert.IsInstanceOf<Usuario>(resultado);
         }

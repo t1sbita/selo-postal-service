@@ -5,9 +5,9 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using selo_postal_api.Core.Domain.Entities;
 
-namespace selo_postal_api.Api.Authorization
+namespace selo_postal_api.Core.Authorization
 {
-    public static class TokenService
+    public static class TokenUtils
     {
         public static string GerarToken(Usuario usuario)
         {

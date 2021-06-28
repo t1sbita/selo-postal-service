@@ -1,4 +1,4 @@
-namespace selo_postal_api.Api.Authorization
+namespace selo_postal_api.Core.Authorization
 {
     public static class Settings
     {

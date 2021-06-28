@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using selo_postal_api.Core.Services.Interfaces;
 using selo_postal_api.Core.Domain.Entities;
 using selo_postal_api.Api.Controllers;
+using selo_postal_api.Core.Domain.Models;
 
 namespace selo_postal_api.Tests.API
 {
@@ -19,6 +20,8 @@ namespace selo_postal_api.Tests.API
         private UsuariosController usuariosController;
 
         private Usuario novoUsuario;
+        private UsuarioLogin novoUsuarioEntradaModel;
+        private UsuarioToken novoUsuarioSaidaModel;
         private Usuario usuarioDiferenteDoLogado;
         
         private ControllerContext contextUser;
@@ -37,6 +40,21 @@ namespace selo_postal_api.Tests.API
                 Password = "senhateste",
                 Role = "teste"
             };
+
+            novoUsuarioEntradaModel = new UsuarioLogin()
+            {
+                Login = "usuario",
+                Password = "senhateste",
+                
+            };
+
+            novoUsuarioSaidaModel = new UsuarioToken()
+            {
+                Login = "usuario",
+                Token = "tokenGenerico",
+                
+            };
+
             usuarioDiferenteDoLogado = new Usuario()
             {
                 Login = "usuarioDiferente",
@@ -92,9 +110,9 @@ namespace selo_postal_api.Tests.API
         [Test]
         public void RetornaTokenAutenticacao()
         {
-            mockUsuario.Setup(u => u.Authenticate(It.IsAny<Usuario>())).Returns(novoUsuario);
+            mockUsuario.Setup(u => u.Authenticate(It.IsAny<UsuarioLogin>())).Returns(novoUsuarioSaidaModel);
 
-            var resultado = usuariosController.Authenticate(novoUsuario);
+            var resultado = usuariosController.Authenticate(novoUsuarioEntradaModel);
 
             Assert.IsInstanceOf<OkObjectResult>(resultado);
         }
@@ -102,9 +120,9 @@ namespace selo_postal_api.Tests.API
         [Test]
         public void TentaAutenticarUsuarioIncorreto()
         {
-            mockUsuario.Setup(u => u.Authenticate(It.IsAny<Usuario>())).Returns<Usuario>(null);
+            mockUsuario.Setup(u => u.Authenticate(It.IsAny<UsuarioLogin>())).Returns<UsuarioToken>(null);
 
-            var resultado = usuariosController.Authenticate(novoUsuario);
+            var resultado = usuariosController.Authenticate(novoUsuarioEntradaModel);
 
             Assert.IsInstanceOf<NotFoundObjectResult>(resultado);
         }

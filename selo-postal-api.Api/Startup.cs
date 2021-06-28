@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using selo_postal_api.Api.Authorization;
+using selo_postal_api.Core.Authorization;
 using selo_postal_api.Core.Interfaces;
 using selo_postal_api.Core.Services;
 using selo_postal_api.Core.Services.Interfaces;
