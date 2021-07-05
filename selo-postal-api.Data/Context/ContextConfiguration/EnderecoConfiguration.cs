@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using selo_postal_api.Core.Domain.Entities;
 
 namespace selo_postal_api.Data.Context.ContextConfiguration
 {
+    [ExcludeFromCodeCoverage]
     public class EnderecoConfiguration : IEntityTypeConfiguration<Endereco>
     {
         public void Configure(EntityTypeBuilder<Endereco> builder)

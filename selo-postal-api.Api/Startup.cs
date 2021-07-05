@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -22,6 +23,7 @@ using selo_postal_api.Data.Repository;
 
 namespace selo_postal_api.Api
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -83,11 +85,6 @@ namespace selo_postal_api.Api
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
 
-                var security = new Dictionary<string, IEnumerable<string>>
-                {
-                    {"Bearer", new string[] { }},
-                };
-
                 c.AddSecurityDefinition(
                     "Bearer",
                     new OpenApiSecurityScheme
@@ -121,8 +118,7 @@ namespace selo_postal_api.Api
             if (env.IsDevelopment())
             {
                 app.UseExceptionHandler("/error");
-                //app.UseDeveloperExceptionPage();
-
+                
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "selo_postal_api.Api v1"));
             }

@@ -2,6 +2,7 @@
 using Moq;
 using selo_postal_api.Core.Interfaces;
 using selo_postal_api.Core.Services;
+using System;
 
 namespace selo_postal_api.Tests.Core
 {
@@ -36,13 +37,13 @@ namespace selo_postal_api.Tests.Core
         [TestCase(5)]
         public void PesquisarQrCodeInexistente(int id)
         {
-            byte[] imagem = null;
+            byte[] imagem = Array.Empty<byte>();
 
             mockQrCode.Setup(e => e.GetQrCode(It.IsAny<int>())).Returns(imagem);
             
             var resultado = qrCodeService.GetQrCode(id);
 
-            Assert.IsNull(resultado);
+            Assert.IsEmpty(resultado);
         }
 
     }

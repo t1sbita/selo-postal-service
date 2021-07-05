@@ -80,7 +80,7 @@ namespace selo_postal_api.Api.Controllers
         {
             byte[] img = _qrCoderService.GetQrCode(id);
 
-            if (img != null)
+            if (img.Length != 0)
             {
                 return File(img, "image/png");
             }

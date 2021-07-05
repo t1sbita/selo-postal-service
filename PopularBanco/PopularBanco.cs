@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using selo_postal_api.Data.Context;
 
 namespace PopularBanco
 {
+    [ExcludeFromCodeCoverage]
     public static class PopularBanco
     {
         public static List<Cidade> PopularCidade()

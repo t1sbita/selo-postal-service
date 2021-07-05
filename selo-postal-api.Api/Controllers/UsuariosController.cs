@@ -20,25 +20,25 @@ namespace selo_postal_api.Api.Controllers
         /// <summary>
         /// Adiciona um novo usuário
         /// </summary>
-        /// <param name="model">Informacoes do usuario para serem atualizadas</param>
+        /// <param name="usuario">Informacoes do usuario para serem atualizadas</param>
         /// <returns>Novo usuario</returns>
         /// <response code="200">Usuario criado com sucesso</response>
         /// <response code="400">Informacoes do usuario nao esta no padrao</response>
         /// <response code="401">"Token Invalido ou expirado!"</response>
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public IActionResult Add([FromBody] Usuario model)
+        public IActionResult Add([FromBody] Usuario usuario)
         {
-            if (!_usuarioService.VerificaExistente(model))
+            if (!_usuarioService.VerificaExistente(usuario))
             {
 
-                Usuario usuario = _usuarioService.Add(model);
-                if (usuario == null)
+                Usuario novoUsuario = _usuarioService.Add(usuario);
+                if (novoUsuario == null)
                 {
                     return BadRequest("Dados incorretos, verifique");
                 }
 
-                return Ok(usuario);
+                return Ok(novoUsuario);
             }
             return BadRequest("Usuario já existe");
 
@@ -47,17 +47,17 @@ namespace selo_postal_api.Api.Controllers
         /// <summary>
         /// Realiza o login
         /// </summary>
-        /// <param name="model">Informações do usuario que deseja logar</param>
+        /// <param name="loginModel">Informações do usuario que deseja logar</param>
         /// <returns>Token para autenticacao</returns>
         /// <response code="200">Token retornado com sucesso</response>
         /// <response code="400">Erro na validacao das informacoes</response>
         /// <response code="404">"Usuario ou senha incorretos"</response>
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Authenticate([FromBody] UsuarioLogin model)
+        public IActionResult Authenticate([FromBody] UsuarioLogin loginModel)
         {
 
-            var usuario = _usuarioService.Authenticate(model);
+            var usuario = _usuarioService.Authenticate(loginModel);
 
             if (usuario == null)
             {
@@ -71,7 +71,7 @@ namespace selo_postal_api.Api.Controllers
         /// Altera um usuario
         /// </summary>
         /// <param name="id">id do usuario</param>
-        /// <param name="model">Informacoes do usuario que deverao ser alteradas</param>
+        /// <param name="usuario">Informacoes do usuario que deverao ser alteradas</param>
         /// <returns>Usuario criado</returns>
         /// <response code="200">Usuario alterado com sucesso</response>
         /// <response code="400">Erro na validacao das informacoes</response>
@@ -79,7 +79,7 @@ namespace selo_postal_api.Api.Controllers
         /// <response code="404">Usuario nao encontrado</response>
         [Authorize]
         [HttpPatch("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] Usuario model)
+        public IActionResult Update([FromRoute] int id, [FromBody] Usuario usuario)
         {
             string loginUsuario = _usuarioService.RetornaLogin(id);
 
@@ -87,7 +87,7 @@ namespace selo_postal_api.Api.Controllers
             {
                 return BadRequest("Usuário incorreto / não existe");
             }
-            var user = _usuarioService.Update(id, model);
+            var user = _usuarioService.Update(id, usuario);
             return Ok(user);
 
         }

@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace selo_postal_api.Api.Handlers
 {
+    [ExcludeFromCodeCoverage]
     public class ExceptionHandlingMiddleware : ControllerBase
     {
         [Route("/error")]

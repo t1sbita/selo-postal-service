@@ -72,11 +72,11 @@ namespace selo_postal_api.Tests.Data
 
         [TestCase(10)]
         [TestCase(20)]
-        public void RetornaUmaImagemNull(int id)
+        public void RetornaUmaImagemVazia(int id)
         {
             var resultado = qrCodeRepository.GetQrCode(id);
 
-            Assert.IsNull(resultado);
+            Assert.IsEmpty(resultado);
         }
 
     }

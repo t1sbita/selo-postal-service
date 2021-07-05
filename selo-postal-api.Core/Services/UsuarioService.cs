@@ -15,9 +15,9 @@ namespace selo_postal_api.Core.Services
             _usuarioRepository = usuarioRepository;
         }
 
-        public UsuarioToken Authenticate(UsuarioLogin model)
+        public UsuarioToken Authenticate(UsuarioLogin loginModel)
         {
-             var usuario = _usuarioRepository.Authenticate(model.Login, model.Password);
+             var usuario = _usuarioRepository.Authenticate(loginModel.Login, loginModel.Password);
 
             if (usuario == null)
             {
@@ -44,9 +44,9 @@ namespace selo_postal_api.Core.Services
             return _usuarioRepository.Update(id, usuario);
         }
 
-        public Usuario Add(Usuario model)
+        public Usuario Add(Usuario usuario)
         {
-            return _usuarioRepository.Add(model);
+            return _usuarioRepository.Add(usuario);
         }
 
         public bool VerificaExistente(Usuario model)

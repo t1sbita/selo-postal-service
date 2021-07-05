@@ -69,7 +69,7 @@ namespace selo_postal_api.Tests.Core
 
             var resultado = usuarioService.Authenticate(novoUsuarioEntradaModel);
 
-            Assert.IsInstanceOf<Usuario>(resultado);
+            Assert.IsInstanceOf<UsuarioToken>(resultado);
         }
 
         [TestCase(1)]

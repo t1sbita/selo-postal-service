@@ -124,7 +124,7 @@ namespace selo_postal_api.Tests.API
 
             var resultado = usuariosController.Authenticate(novoUsuarioEntradaModel);
 
-            Assert.IsInstanceOf<NotFoundObjectResult>(resultado);
+            Assert.IsInstanceOf<UnauthorizedResult>(resultado);
         }
 
         [TestCase(1)]

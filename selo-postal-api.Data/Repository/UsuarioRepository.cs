@@ -16,18 +16,18 @@ namespace selo_postal_api.Data.Repository
             _context = context;
         }
 
-        public Usuario Add(Usuario model)
+        public Usuario Add(Usuario usuario)
         {
-            var usuario = new Usuario
+            var novoUsuario = new Usuario
             {
-                Login = model.Login,
-                Password = model.Password,
-                Role = model.Role,
+                Login = usuario.Login,
+                Password = usuario.Password,
+                Role = usuario.Role,
             };
-            _context.Usuario.Add(usuario);
+            _context.Usuario.Add(novoUsuario);
             _context.SaveChanges();
 
-            return usuario;
+            return novoUsuario;
         }
 
         public Usuario Authenticate(string login, string password)
@@ -51,25 +51,25 @@ namespace selo_postal_api.Data.Repository
             return null;
         }
 
-        public Usuario Update(int id, Usuario model)
+        public Usuario Update(int id, Usuario usuario)
         {
-            var usuario = _context.Usuario.FirstOrDefault(x => x.Id == id);
-            if (usuario == null)
+            var usuarioNoBanco = _context.Usuario.FirstOrDefault(x => x.Id == id);
+            if (usuarioNoBanco == null)
             {
                 return null;
             }
 
-            _context.Usuario.Attach(usuario);
-            usuario.Password = model.Password;
+            _context.Usuario.Attach(usuarioNoBanco);
+            usuarioNoBanco.Password = usuario.Password;
 
-            if (!string.IsNullOrEmpty(model.Role))
+            if (!string.IsNullOrEmpty(usuario.Role))
             {
-                usuario.Role = model.Role;
+                usuarioNoBanco.Role = usuario.Role;
             }
 
             _context.SaveChanges();
 
-            return usuario;
+            return usuarioNoBanco;
         }
 
         public bool VerificaExistente(Usuario model) => (_context.Usuario.FirstOrDefault(x => x.Login == model.Login) != null);

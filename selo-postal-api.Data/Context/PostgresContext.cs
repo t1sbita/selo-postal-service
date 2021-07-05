@@ -3,8 +3,11 @@ using System;
 
 using selo_postal_api.Core.Domain.Entities;
 using selo_postal_api.Data.Context.ContextConfiguration;
+using System.Diagnostics.CodeAnalysis;
+
 namespace selo_postal_api.Data.Context
 {
+    [ExcludeFromCodeCoverage]
     public partial class PostgresContext : DbContext
     {
         public virtual DbSet<Endereco> Endereco { get; set; }

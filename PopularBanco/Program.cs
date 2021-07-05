@@ -2,12 +2,14 @@
 using selo_postal_api.Core.Domain.Entities;
 using selo_postal_api.Data.Context;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace PopularBanco
 {
     static class Program
     {
+        [ExcludeFromCodeCoverage]
         static void Main(string[] args)
         {
             Console.WriteLine("Carregando informações no Banco:");

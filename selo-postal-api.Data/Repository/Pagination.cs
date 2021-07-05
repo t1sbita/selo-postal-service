@@ -3,7 +3,7 @@ using selo_postal_api.Core.Domain.Entities;
 
 namespace selo_postal_api.Data.Repository
 {
-    public class Pagination<TEntity> where TEntity : class
+    public static class Pagination<TEntity> where TEntity : class
     {
 
         public static (int, int) CalcPageOffset(PageRequest request)

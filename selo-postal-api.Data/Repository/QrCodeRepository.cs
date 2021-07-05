@@ -9,6 +9,7 @@ using QRCoder;
 using selo_postal_api.Core.Domain.Entities;
 using selo_postal_api.Core.Interfaces;
 using selo_postal_api.Data.Context;
+using System;
 
 namespace selo_postal_api.Data.Repository
 {
@@ -26,7 +27,7 @@ namespace selo_postal_api.Data.Repository
         {
             if (bitmap == null)
             {
-                return null;
+                return Array.Empty<byte>();
             }
             using (var stream = new MemoryStream())
             {
@@ -47,7 +48,7 @@ namespace selo_postal_api.Data.Repository
 
                 return ToByteArray(qrCodeImage);
             }
-            return null;
+            return Array.Empty<byte>();
 
         }
     }

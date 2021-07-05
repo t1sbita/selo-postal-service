@@ -8,7 +8,7 @@ using selo_postal_api.Core.Domain.Entities;
 using selo_postal_api.Core.Domain.Models;
 using selo_postal_api.Core.Domain.DTO;
 using selo_postal_api.Api.Controllers;
-
+using System;
 
 namespace selo_postal_api.Tests.API
 {
@@ -110,7 +110,7 @@ namespace selo_postal_api.Tests.API
             
             var resultado = enderecosController.GetByParameters(filtro, number, limit);
 
-            Assert.IsInstanceOf<NotFoundResult>(resultado);
+            Assert.IsInstanceOf<NoContentResult>(resultado);
 
         }
 
@@ -206,7 +206,7 @@ namespace selo_postal_api.Tests.API
         [TestCase(5)]
         public void PesquisarQrCodeInexistente(int id)
         {
-            byte[] imagem = null;
+            byte[] imagem = Array.Empty<byte>();
 
             mockQrCode.Setup(e => e.GetQrCode(It.IsAny<int>())).Returns(imagem);
 
