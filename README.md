@@ -1,17 +1,59 @@
 # Selo Postal Service
 
-## Sistema básico para filtragem de dados e criação de QR Code para etiquetas
+## API para filtragem de dados e criação de QR Code para etiquetas
 
 <br/>
 
-### Fluxo do sistema
+O projeto Recognize está dividido em módulos:
 
-1. A partir de uma lista, que serve de base de dados
-1. O usuário pode escolher por quais parâmetros quer filtrar os dados (podendo escolher nenhum, ou todos disponíveis) e como pagina-los
-1. O sistema retornará um TSV contendo os dados filtrados
-1. Para cada dado filtrado, existirá um qrcodeRef, que indicará aonde está armazenado o QR Code equivalente ao dado filtrado
+| Módulo         | Descrição                                            |
+| -------------- | ---------------------------------------------------- |
+| selo-postal-api.API  | Ponto de entrada da aplicação (Controllers)          |
+| selo-postal-api.Core | Servicos, Entidades, Regras da API                   |
+| selo-postal-api.Data | Camada de acesso a dados, conexão com banco de dados |
+| selo-postal-api.Tests| Testes Unitários                                     |
 
+
+**Atenção**
+
+- **Caso esteja utilizando o Visual Studio**
+
+> Neste momento o seu Visual Studio já deve estar configurado com o .NET Core.
+
+1. Clone o projeto para sua máquina local.
+
+2. Abra o arquivo _Ceabs.FCAPlataformaDados.sln_ com o Visual Studio.
+
+3. Execute a aplicação a partir do projeto Ceabs.FCAPlataformaDados.API.
+
+> No navegador padrão da máquina será aberto uma página com o sistema, Utilize a url `<base_url:port>/swagger` e verifique se o projeto está iniciando normalmente.
+
+- **Caso esteja utilizando o Visual Studio Code**
+
+> Neste momento o seu Visual Studio Code e o .NET Core devem estar devidamente instalados na máquina.
+
+1. Clone o projeto para sua máquina local.
+
+2. Abra a pasta do projeto no editor de código.
+
+3. Aceite todas as sugestões de instalação de extensões que aparecerem assim que a pasta do projeto for aberta.
+
+4. No menu Debug, inicie o debug do projeto
+
+> No navegador padrão da máquina será aberto uma página com o sistema, Utilize a url `<base_url:port>/swagger` e verifique se o projeto está iniciando normalmente.
+
+### Gerar token JWT
+
+* Usuario deve obter o token de autenticação em `/api/usuarios/login`
 <br/>
+## Construindo e rodando o projeto sem ide.
+
+```shell
+$ dotnet restore
+$ dotnet build
+$ dotnet run --project=.\selo-postal-api.Api\selo-postal-api.Api.csproj
+```
+
 
 #### Filtros disponíveis
 * Cidade
@@ -20,6 +62,7 @@
 
 #### Paginação
 O usuário pode escolher a quantidade por página que será exibida, e a página que quer que seja exibida
+_Obs.: A quantidade por página será aproximada para o mais próximo entre 10, 20, 30, 50 ou 100_
 
 *Exemplo:*
 Usuário escolhe que quer 10 resultados por página, e quer os dados da terceira página, então serão retornados os itens 21 a 30.
