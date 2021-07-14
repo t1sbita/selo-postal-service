@@ -4,7 +4,7 @@
 
 <br/>
 
-O projeto Recognize está dividido em módulos:
+O projeto está dividido em módulos:
 
 | Módulo         | Descrição                                            |
 | -------------- | ---------------------------------------------------- |
@@ -22,9 +22,9 @@ O projeto Recognize está dividido em módulos:
 
 1. Clone o projeto para sua máquina local.
 
-2. Abra o arquivo _Ceabs.FCAPlataformaDados.sln_ com o Visual Studio.
+2. Abra o arquivo selo-postal-api.sln com o Visual Studio.
 
-3. Execute a aplicação a partir do projeto Ceabs.FCAPlataformaDados.API.
+3. Execute a aplicação a partir do projeto selo-postal-api.Api.
 
 > No navegador padrão da máquina será aberto uma página com o sistema, Utilize a url `<base_url:port>/swagger` e verifique se o projeto está iniciando normalmente.
 
