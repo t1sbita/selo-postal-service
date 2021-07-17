@@ -21,87 +21,39 @@ namespace selo_postal_api.Data.Repository
             _context = context;
         }
 
-        public List<Endereco> GetByParameters(SearchEnderecoQueryItem enderecoQueryItem, PageRequest pr)
+
+        public IEnumerable<Endereco> GetAll()
         {
-
-            IEnumerable<Endereco> resultadoPesquisaEndereco = _context.Endereco
-                .Include(c => c.Cidade)
-                .ToList();
-
-
-
-            if (!String.IsNullOrWhiteSpace(enderecoQueryItem.Estado))
-            {
-                resultadoPesquisaEndereco = resultadoPesquisaEndereco.Where(x => x.Cidade.Estado == enderecoQueryItem.Estado);
-            }
-
-            if (!String.IsNullOrWhiteSpace(enderecoQueryItem.Cidade))
-            {
-                resultadoPesquisaEndereco = resultadoPesquisaEndereco.Where(x => x.Cidade.Municipio == enderecoQueryItem.Cidade);
-            }
-
-            if (!String.IsNullOrWhiteSpace(enderecoQueryItem.CodigoPostal))
-            {
-                resultadoPesquisaEndereco = resultadoPesquisaEndereco.Where(x => x.CodigoPostal == enderecoQueryItem.CodigoPostal);
-            }
-
-            var page = Pagination<Endereco>.For(resultadoPesquisaEndereco.AsQueryable(), pr).ToList();
-
-            return page;
-
+            return _context.Endereco
+            .Include(c => c.Cidade);
         }
 
         public Endereco GetById(int id)
         {
 
-            var endereco = _context.Endereco
+            return _context.Endereco
             .Include(c => c.Cidade)
             .FirstOrDefault(e => e.Id == id);
-
-            if (endereco != null)
-            {
-                return endereco;
-            }
-            else
-            {
-                throw new NotFoundException("Id de endereço não encontrado");
-            }
-
         }
 
-        public Endereco Add(EnderecoModel endereco)
-        {
-            var cidade = _context.Cidade.FirstOrDefault(c => c.Id == endereco.Cidade);
-            var novoEndereco = new Endereco(
-                nome: endereco.Nome,
-                enderecoCasa: endereco.EnderecoCasa,
-                numeroCasa: endereco.NumeroCasa,
-                codigoPostal: endereco.CodigoPostal,
-                bairro: endereco.Bairro,
-                cidade: cidade
-                );
-            _context.Endereco.Add(novoEndereco);
+        public Endereco Add(Endereco endereco){
+            
+            _context.Endereco.Add(endereco);
             _context.SaveChanges();
-            return novoEndereco;
+            return _context.Endereco.OrderBy(a => a.Id).LastOrDefault();
         }
 
-        public Endereco Update(int id, EnderecoModel endereco)
+        public Endereco Update(Endereco endereco)
         {
-            var enderecoOriginal = GetById(id);
-            var cidadeNova = _context.Cidade.FirstOrDefault(c => c.Id == endereco.Cidade);
-
-            if (cidadeNova == null)
-            {
-                throw new NotFoundException("Cidade não encontrada");
-            }
-
+            var enderecoOriginal = GetById(endereco.Id);
+            
             _context.Endereco.Attach(enderecoOriginal);
 
             enderecoOriginal.EnderecoCasa = endereco.EnderecoCasa;
             enderecoOriginal.NumeroCasa = endereco.NumeroCasa;
             enderecoOriginal.CodigoPostal = endereco.CodigoPostal;
             enderecoOriginal.Bairro = endereco.Bairro;
-            enderecoOriginal.Cidade = cidadeNova;
+            enderecoOriginal.CidadeId = endereco.CidadeId;
             enderecoOriginal.ModificadoEm = DateTime.Now;
 
             _context.SaveChanges();
@@ -110,6 +62,35 @@ namespace selo_postal_api.Data.Repository
         }
 
 
+        // public List<Endereco> GetByParameters(SearchEnderecoQueryItem enderecoQueryItem, PageRequest pr)
+        // {
+
+        //     IEnumerable<Endereco> resultadoPesquisaEndereco = _context.Endereco
+        //         .Include(c => c.Cidade)
+        //         .ToList();
+
+
+
+        //     if (!String.IsNullOrWhiteSpace(enderecoQueryItem.Estado))
+        //     {
+        //         resultadoPesquisaEndereco = resultadoPesquisaEndereco.Where(x => x.Cidade.Estado == enderecoQueryItem.Estado);
+        //     }
+
+        //     if (!String.IsNullOrWhiteSpace(enderecoQueryItem.Cidade))
+        //     {
+        //         resultadoPesquisaEndereco = resultadoPesquisaEndereco.Where(x => x.Cidade.Municipio == enderecoQueryItem.Cidade);
+        //     }
+
+        //     if (!String.IsNullOrWhiteSpace(enderecoQueryItem.CodigoPostal))
+        //     {
+        //         resultadoPesquisaEndereco = resultadoPesquisaEndereco.Where(x => x.CodigoPostal == enderecoQueryItem.CodigoPostal);
+        //     }
+
+        //     var page = Pagination<Endereco>.For(resultadoPesquisaEndereco.AsQueryable(), pr).ToList();
+
+        //     return page;
+
+        // }
         public void Remove(int id)
         {
             Endereco endereco = GetById(id);
@@ -119,7 +100,7 @@ namespace selo_postal_api.Data.Repository
                 _context.Endereco.Remove(endereco);
                 _context.SaveChanges();
             }
-            
+
         }
     }
 }

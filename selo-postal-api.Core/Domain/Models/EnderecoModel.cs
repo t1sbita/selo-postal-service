@@ -1,5 +1,7 @@
 ﻿
 using System;
+using selo_postal_api.Core.Domain.Entities;
+using selo_postal_api.Core.Utils;
 
 namespace selo_postal_api.Core.Domain.Models
 {
@@ -17,8 +19,9 @@ namespace selo_postal_api.Core.Domain.Models
 
         public EnderecoModel()
         {
-          
+
         }
+
 
     }
 

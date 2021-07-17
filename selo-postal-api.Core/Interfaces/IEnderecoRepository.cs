@@ -8,9 +8,9 @@ namespace selo_postal_api.Core.Interfaces
 {
     public interface IEnderecoRepository
     {
-        List<Endereco> GetByParameters(SearchEnderecoQueryItem enderecoQueryItem, PageRequest pr);
-        Endereco Update(int id, EnderecoModel endereco);
-        Endereco Add(EnderecoModel endereco);
+        IEnumerable<Endereco> GetAll();
+        Endereco Update(Endereco endereco);
+        Endereco Add(Endereco endereco);
         void Remove(int id);
         Endereco GetById(int id);
     }

@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using selo_postal_api.Core.Domain.DTO;
 using selo_postal_api.Core.Domain.Entities;
 using selo_postal_api.Core.Domain.Models;
 using selo_postal_api.Core.Interfaces;
 using selo_postal_api.Core.Services.Interfaces;
+using selo_postal_api.Core.Utils;
 
 namespace selo_postal_api.Core.Services
 {
@@ -17,85 +19,80 @@ namespace selo_postal_api.Core.Services
             _enderecoRepository = enderecoRepository;
         }
 
-        public EnderecoModel Add(EnderecoModel endereco)
+        public EnderecoModelResponse Add(EnderecoModel endereco)
         {
-            Endereco enderecoBanco = _enderecoRepository.Add(endereco);
-            EnderecoModel model = new EnderecoModel()
-            {
-                Nome = enderecoBanco.Nome,
-                EnderecoCasa = enderecoBanco.EnderecoCasa,
-                NumeroCasa = enderecoBanco.NumeroCasa,
-                Bairro = enderecoBanco.Bairro,
-                CodigoPostal = enderecoBanco.CodigoPostal,
-                Cidade = enderecoBanco.Cidade.Id,
-                CriadoEm = enderecoBanco.CriadoEm,
-                ModificadoEm = enderecoBanco.ModificadoEm
-            };
+            // Endereco enderecoBanco = _enderecoRepository.Add(endereco);
 
-            return model;
+            return null; // (EnderecoModelResponse)enderecoBanco;
         }
 
-        public List<EnderecoModel> GetByParameters(SearchEnderecoQueryItem searchEnderecoQueryItem, PageRequest pageRequest)
+        public EnderecoPagination GetByParameters(SearchEnderecoQueryItem searchEnderecoQueryItem, PageRequest pageRequest)
         {
-            List<EnderecoModel> listaModel = new List<EnderecoModel>();
-            List<Endereco> listaEnderecos = _enderecoRepository.GetByParameters(searchEnderecoQueryItem, pageRequest);
+            List<EnderecoModelResponse> listaModel = new List<EnderecoModelResponse>();
+            IEnumerable<Endereco> listaEnderecos = _enderecoRepository.GetAll();
 
-            foreach (Endereco endereco in listaEnderecos)
+                if (!String.IsNullOrWhiteSpace(searchEnderecoQueryItem.Estado))
             {
-                listaModel.Add(
-                    new EnderecoModel()
-                    {
-                        Nome = endereco.Nome,
-                        EnderecoCasa = endereco.EnderecoCasa,
-                        NumeroCasa = endereco.NumeroCasa,
-                        Bairro = endereco.Bairro,
-                        CodigoPostal = endereco.CodigoPostal,
-                        Cidade = endereco.Cidade.Id,
-                        CriadoEm = endereco.CriadoEm,
-                        ModificadoEm = endereco.ModificadoEm,
-                        QrCode = $"https://localhost:5001/api/Enderecos/{endereco.Id}/qrcode"
-                    }
-                );
+                listaEnderecos = listaEnderecos.Where(x => x.Cidade.Estado == searchEnderecoQueryItem.Estado);
             }
 
-            return listaModel;
-
-        }
-
-        public EnderecoModel GetById(int id)
-        {
-            var endereco = _enderecoRepository.GetById(id);
-            return new EnderecoModel()
+            if (!String.IsNullOrWhiteSpace(searchEnderecoQueryItem.Cidade))
             {
-                Nome = endereco.Nome,
-                EnderecoCasa = endereco.EnderecoCasa,
-                NumeroCasa = endereco.NumeroCasa,
-                Bairro = endereco.Bairro,
-                CodigoPostal = endereco.CodigoPostal,
-                Cidade = endereco.Cidade.Id,
-                CriadoEm = endereco.CriadoEm,
-                ModificadoEm = endereco.ModificadoEm,
-                QrCode = $"https://localhost:5001/api/Enderecos/{endereco.Id}/qrcode"
+                listaEnderecos = listaEnderecos.Where(x => x.Cidade.Municipio == searchEnderecoQueryItem.Cidade);
+            }
+
+            if (!String.IsNullOrWhiteSpace(searchEnderecoQueryItem.CodigoPostal))
+            {
+                listaEnderecos = listaEnderecos.Where(x => x.CodigoPostal == searchEnderecoQueryItem.CodigoPostal);
+            }
+            
+            foreach (Endereco endereco in listaEnderecos)
+            {
+                listaModel.Add((EnderecoModelResponse)endereco);
+            }
+
+            var page = Pagination<EnderecoModelResponse>.For(listaModel.AsQueryable(), pageRequest).ToList();
+
+            int totalPaginas = (int)Math.Ceiling(listaModel.Count / (double)pageRequest.Limit);
+            return new EnderecoPagination
+            {
+                Total = listaModel.Count,
+                TotalPaginas = totalPaginas,
+                QtdPorPagina = pageRequest.Limit,
+                NumeroPagina = pageRequest.Number,
+                Resultado = page,
+                Anterior = pageRequest.Number > 1
+                    ? String.Format(
+                        Constants.UrlPaginationPattern,
+                        searchEnderecoQueryItem.Cidade,
+                        searchEnderecoQueryItem.Estado,
+                        searchEnderecoQueryItem.CodigoPostal,
+                        pageRequest.Number -1,
+                        pageRequest.Limit
+                        )
+                    : "",
+                Proximo = pageRequest.Number < totalPaginas
+                    ? String.Format(
+                        Constants.UrlPaginationPattern,
+                        searchEnderecoQueryItem.Cidade,
+                        searchEnderecoQueryItem.Estado,
+                        searchEnderecoQueryItem.CodigoPostal,
+                        pageRequest.Number +1,
+                        pageRequest.Limit
+                        )
+                    : ""
             };
         }
 
-        public EnderecoModel Update(int id, EnderecoModel endereco)
+        public EnderecoModelResponse GetById(int id)
         {
-            Endereco enderecoBanco = _enderecoRepository.Update(id, endereco);
-            EnderecoModel model = new EnderecoModel()
-            {
-                Nome = enderecoBanco.Nome,
-                EnderecoCasa = enderecoBanco.EnderecoCasa,
-                NumeroCasa = enderecoBanco.NumeroCasa,
-                Bairro = enderecoBanco.Bairro,
-                CodigoPostal = enderecoBanco.CodigoPostal,
-                Cidade = enderecoBanco.Cidade.Id,
-                CriadoEm = enderecoBanco.CriadoEm,
-                ModificadoEm = enderecoBanco.ModificadoEm,
-                QrCode = $"https://localhost:5001/api/Enderecos/{enderecoBanco.Id}/qrcode"
-            };
+           return (EnderecoModelResponse)_enderecoRepository.GetById(id);
+        }
 
-            return model;
+        public EnderecoModelResponse Update(int id, EnderecoModel endereco)
+        {
+            return null; //(EnderecoModelResponse)_enderecoRepository.Update(endereco);
+
         }
 
         public void Remove(int id)

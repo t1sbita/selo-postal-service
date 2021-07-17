@@ -7,10 +7,10 @@ namespace selo_postal_api.Core.Services.Interfaces
 {
     public interface IEnderecoService
     {
-        EnderecoModel Add(EnderecoModel endereco);
-        List<EnderecoModel> GetByParameters(SearchEnderecoQueryItem searchEnderecoQueryItem, PageRequest pageRequest);
-        EnderecoModel GetById(int id);
-        EnderecoModel Update(int id, EnderecoModel endereco);
+        EnderecoModelResponse Add(EnderecoModel endereco);
+        EnderecoPagination GetByParameters(SearchEnderecoQueryItem searchEnderecoQueryItem, PageRequest pageRequest);
+        EnderecoModelResponse GetById(int id);
+        EnderecoModelResponse Update(int id, EnderecoModel endereco);
         void Remove(int id);
     }
 }

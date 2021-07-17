@@ -10,5 +10,6 @@ namespace selo_postal_api.Core.Domain.Models
     {
         public string Login { get; set; }
         public string Token { get; set; }
+
     }
 }
